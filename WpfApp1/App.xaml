@@ -1,0 +1,410 @@
+﻿<Application x:Class="WpfApp1.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:local="clr-namespace:WpfApp1"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <SolidColorBrush x:Key="GreyColor" Color="#B7B7B7"/>
+
+
+        
+        <Style  x:Key="dishesBorder" TargetType="Border">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FFEFEFEF" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="menuTitle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#ffffff" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontFamily" Value="Fonts/#Inter Semibold"/>
+            <Setter Property="Margin" Value="40 30 0 15" />
+        </Style>
+
+        <Style x:Key="dishFontStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontFamily" Value="Fonts/#Inter Semibold"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Dish.Length}" Value="1">
+                    <Setter Property="FontSize" Value="26" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="roundedTextBox" TargetType="TextBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="1.5"
+                                CornerRadius="10"
+                                Padding="5 0 0 0">
+                            <ScrollViewer x:Name="PART_ContentHost"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="roundedPasswordBox" TargetType="PasswordBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="PasswordBox">
+                        <Border Background="{TemplateBinding Background}"
+                         BorderBrush="{TemplateBinding BorderBrush}"
+                         BorderThickness="1.5"
+                         CornerRadius="10"
+                         Padding="5 0 0 0">
+                            <ScrollViewer x:Name="PART_ContentHost"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="comboBoxToggleButton" TargetType="ToggleButton">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="20"/>
+                            </Grid.ColumnDefinitions>
+                            <Border x:Name="Border"
+                            Grid.ColumnSpan="2"
+                            CornerRadius="10"
+                            Background="White"
+                            BorderBrush="#FFABADB3"
+                            BorderThickness="1.5"/>
+                            <Border x:Name="Border2"
+                            Grid.Column="0"
+                            CornerRadius="10,0,0,10"
+                            Background="Transparent"
+                            BorderBrush="#FFABADB3"
+                            BorderThickness="0,0,1,0"/>
+                            <Path x:Name="Arrow"
+                          Grid.Column="1"
+                          Fill="#FFABADB3"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"
+                          Data="M 0 0 L 4 4 L 8 0 Z"/>
+                            <ContentPresenter x:Name="ContentPresenter"
+                          Grid.Column="0"
+                          HorizontalAlignment="Left"
+                          VerticalAlignment="Center"
+                          Margin="5,0,0,0"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="Transparent"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#FFABADB3"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="roundedComboBox" TargetType="ComboBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton Name="ToggleButton"
+                                          Style="{StaticResource comboBoxToggleButton}"
+                                          Grid.Column="2"
+                                          Focusable="false"
+                                          IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"
+                                          ClickMode="Press"/>
+                            <ContentPresenter Name="ContentSite"
+                                              Content="{TemplateBinding SelectionBoxItem}"
+                                              ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                              ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                              VerticalAlignment="Center"
+                                              HorizontalAlignment="Left"
+                                              Margin="10,0,0,0"
+                                              />
+                            <Popup Name="Popup"
+                                   Placement="Bottom"
+                                   IsOpen="{TemplateBinding IsDropDownOpen}"
+                                   AllowsTransparency="True"
+                                   Focusable="False"
+                                   PopupAnimation="Slide">
+                                <Grid Name="DropDown"
+                                      SnapsToDevicePixels="True"
+                                      MinWidth="{TemplateBinding ActualWidth}"
+                                      MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <Border x:Name="DropDownBorder"
+                                            Background="White"
+                                            BorderThickness="1.5"
+                                            BorderBrush="#FFABADB3"/>
+                                    <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
+                                        <ItemsPresenter SnapsToDevicePixels="True"/>
+                                    </ScrollViewer>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Padding" Value="10 0 0 0"/>
+        </Style>
+        <Style x:Key="topDishImage" TargetType="Image">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Dish}" Value="Антрекот по-бретонски">
+                    <Setter Property="Source" Value="/Images/Dishes/entrecote bretonne.png"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Dish}" Value="Фрикасе из куропатки">
+                    <Setter Property="Source" Value="/Images/Dishes/partridge fricassee.png"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Dish}" Value="Каре ягненка">
+                    <Setter Property="Source" Value="/Images/Dishes/rack of lamb.png"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Dish}" Value="Форель с овощным жюльеном">
+                    <Setter Property="Source" Value="/Images/Dishes/trout with julienne.png"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Dish}" Value="Треска с миндалем">
+                    <Setter Property="Source" Value="/Images/Dishes/cod in almond.png"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Dish}" Value="Стейк с овощами">
+                    <Setter Property="Source" Value="/Images/Dishes/steak and vegetables.png"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Dish}" Value="Фуа-гра">
+                    <Setter Property="Source" Value="/Images/Dishes/foie gras.png"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Dish}" Value="Круассаны">
+                    <Setter Property="Source" Value="/Images/Dishes/croissant.png"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Dish}" Value="Буйабес">
+                    <Setter Property="Source" Value="/Images/Dishes/bouillabaisse.png"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Dish}" Value="Профитроли">
+                    <Setter Property="Source" Value="/Images/Dishes/profiteroles.png"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Dish}" Value="Луковый суп">
+                    <Setter Property="Source" Value="/Images/Dishes/onion_soup.png"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Dish}" Value="Рататуй">
+                    <Setter Property="Source" Value="/Images/Dishes/ratatouille.png"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Dish}" Value="Мусс из шоколада">
+                    <Setter Property="Source" Value="/Images/Dishes/chocolate mousse.png"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Dish}" Value="Тарт татен">
+                    <Setter Property="Source" Value="/Images/Dishes/tarte tatin.png"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Dish}" Value="Баба-ау-ром">
+                    <Setter Property="Source" Value="/Images/Dishes/baba au rhum.png"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Dish}" Value="Шоколадный фондан">
+                    <Setter Property="Source" Value="/Images/Dishes/chocolate fondant.png"></Setter>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="menuButton"  TargetType="Button">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="Height" Value="45" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Margin" Value="15 0 15 5" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="15">
+                            <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FFEFEFEF"/>
+                    <Setter Property="Foreground" Value="#FF8A7253" />
+                </Trigger>
+                <Trigger Property="Tag" Value="Selected">
+                    <Setter Property="Background" Value="#FFEFEFEF"/>
+                    <Setter Property="Foreground" Value="#FF8A7253"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+
+        <Style x:Key="tablesMenuButton"  TargetType="Button">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="Height" Value="45" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="BorderThickness" Value="14" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="7" BorderThickness="3" BorderBrush="{TemplateBinding BorderBrush}">
+                            <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Status, ElementName=table}" Value="Свободен">
+                    <Setter Property="BorderBrush" Value="#FF85DE31"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=Status, ElementName=table}" Value="Забронирован">
+                    <Setter Property="BorderBrush" Value="#FFE8A45F"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=Status, ElementName=table}" Value="Занят">
+                    <Setter Property="BorderBrush" Value="#FFD21A1A"/>
+                </DataTrigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FFF3F3F3" />
+                    <Setter Property="Foreground" Value="{Binding BorderBrush, RelativeSource={RelativeSource Self}}" />
+                </Trigger>
+                <Trigger Property="Tag" Value="Selected">
+                    <Setter Property="Background" Value="#FFEFEFEF"/>
+                    <Setter Property="Foreground" Value="#A0E182"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="tables2MenuButton"  TargetType="Button">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="Height" Value="45" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="BorderThickness" Value="14" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="{Binding Path=ActualHeight, RelativeSource={RelativeSource Self}}"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Status2, ElementName=tables}" Value="Свободен">
+                    <Setter Property="BorderBrush" Value="#FF85DE31"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=Status2, ElementName=tables}" Value="Забронирован">
+                    <Setter Property="BorderBrush" Value="#FFE8A45F"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=Status2, ElementName=tables}" Value="Занят">
+                    <Setter Property="BorderBrush" Value="#FFD21A1A"/>
+                </DataTrigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FFF3F3F3" />
+                    <Setter Property="Foreground" Value="{Binding BorderBrush, RelativeSource={RelativeSource Self}}" />
+                </Trigger>
+                <Trigger Property="Tag" Value="Selected">
+                    <Setter Property="Background" Value="#FFEFEFEF"/>
+                    <Setter Property="Foreground" Value="#A0E182"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="menuDialogButton"  TargetType="Button">
+            <Setter Property="Background" Value="#EAEAEA" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="Height" Value="45" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Margin" Value="15 0 15 5" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="15">
+                            <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FFEFEFEF"/>
+                    <Setter Property="Foreground" Value="#FF8A7253" />
+                </Trigger>
+                <Trigger Property="Tag" Value="Selected">
+                    <Setter Property="Background" Value="#FFEFEFEF"/>
+                    <Setter Property="Foreground" Value="#FF8A7253"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="loginButton"  TargetType="Button">
+            <Setter Property="Background" Value="#FF755A4B" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Height" Value="45" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Margin" Value="15 0 15 5" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="15">
+                            <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FFEFEFEF"/>
+                    <Setter Property="Foreground" Value="#FF8A7253" />
+                </Trigger>
+                <Trigger Property="Tag" Value="Selected">
+                    <Setter Property="Background" Value="#FFEFEFEF"/>
+                    <Setter Property="Foreground" Value="#FF8A7253"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="menuButtonText" TargetType="TextBlock">
+            <Setter Property="Margin" Value="10 0 0 0"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontFamily" Value="Fonts/#Inter Semibold"/>
+            <Setter Property="Foreground" Value="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Button}}}"/>
+        </Style>
+
+        <Style x:Key="menuText" TargetType="TextBlock">
+            <Setter Property="Margin" Value="10 0 0 0"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontFamily" Value="Fonts/#Inter Semibold"/>
+        </Style>
+
+        <Style x:Key="menuButtonIcon" TargetType="Icon:PackIconMaterial">
+            <Setter Property="Foreground" Value="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" />
+            <Setter Property="Margin" Value="25 0 0 0"/>
+            <Setter Property="Width" Value="18"/>
+            <Setter Property="Height" Value="18"/>
+        </Style>
+
+
+        <Style x:Key="whiteBorder" TargetType="Border">
+            <Setter Property="Background" Value="#ffffff" />
+            <Setter Property="CornerRadius" Value="15" />
+            <Setter Property="Padding" Value="20" />
+        </Style>
+
+
+        <Style x:Key="titleText" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="FontWeight" Value="Bold" />
+        </Style>
+
+
+        <Style x:Key="secondaryText" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource GreyColor}" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Margin" Value="0 5 0 5" />
+        </Style>
+
+    </Application.Resources>
+</Application>

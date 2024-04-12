@@ -1,0 +1,61 @@
+﻿<Window x:Class="WpfApp1.menuPrintWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        xmlns:local="clr-namespace:WpfApp1"
+        mc:Ignorable="d"
+        Title="Печать меню" Height="29.7cm" Width="21cm" ResizeMode="NoResize" Icon="Images/icon.png">
+    <Grid Name="printGrid">
+        <TextBlock Text="Меню" Style="{StaticResource menuText}" HorizontalAlignment="Center" Margin="0 20 0 0" FontSize="45"/>
+        <DataGrid Name="menuGrid" AutoGenerateColumns="False" HorizontalGridLinesBrush="Black"
+RowBackground="White" CanUserAddRows="False" CanUserDeleteRows="False" CanUserSortColumns="False" IsReadOnly="True"  AlternatingRowBackground="White" Visibility="Visible" Height="auto" Margin="10,78,10,67" BorderBrush="White" Background="White" Foreground="Black" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden"
+>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Позиция" Binding="{Binding Path=Name}" Width="350">
+
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="FontFamily" Value="Fonts/#Inter Regular"/>
+                            <Setter Property="TextAlignment" Value="Center"/>
+                            <Setter Property="FontSize" Value="20"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Стоимость" Binding="{Binding Path=Price}" Width="auto">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="FontFamily" Value="Fonts/#Inter Regular"/>
+                            <Setter Property="TextAlignment" Value="Center"/>
+                            <Setter Property="FontSize" Value="20"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Вид" Binding="{Binding Path=Type}" Width="100">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="FontFamily" Value="Fonts/#Inter Regular"/>
+                            <Setter Property="TextAlignment" Value="Center"/>
+                            <Setter Property="FontSize" Value="20"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Дата последнего изменения" Binding="{Binding Path=Date}" Width="260">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="FontFamily" Value="Fonts/#Inter Regular"/>
+                            <Setter Property="TextAlignment" Value="Center"/>
+                            <Setter Property="FontSize" Value="20"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <TextBlock Name="actualText" Text="Актуально на 18.03.2024" Style="{StaticResource menuText}" FontFamily="Fonts/#Inter Medium" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="40"/>
+        <TextBlock Text="Для внутреннего пользования" Style="{StaticResource menuText}" FontSize="12" FontFamily="Fonts/#Inter Medium" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="20"/>
+        <Button Name="printButton"  Style="{StaticResource menuButton}" HorizontalAlignment="Right" VerticalAlignment="Top" Width="40" Height="26" Margin="0,7,10,0" Click="printButton_Click">
+            <Icon:PackIconMaterial Kind="Printer" Style="{StaticResource menuButtonIcon}" Margin="12,0,0,0" VerticalAlignment="Center" />
+        </Button>
+    </Grid>
+</Window>
