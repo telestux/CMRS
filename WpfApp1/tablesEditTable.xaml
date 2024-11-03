@@ -13,6 +13,12 @@
             <StackPanel>
                 <TextBlock  Text="Информация о столе" Style="{StaticResource menuText}" FontSize="27"  TextAlignment="Center" Margin="0 10 0 10"/>
                 <TextBlock Name="statusTextBlock" Text="Свободен" Style="{StaticResource menuText}" FontSize="25"  TextAlignment="Center" Margin="0 10 0 10" Visibility="Collapsed"/>
+                <Button  Name="busyButton"  Style="{StaticResource menuDialogButton}" Height="33" Margin="0 10 0 0"  Cursor="Hand" Width="220" Visibility="Collapsed" Click="Button_Click">
+                <TextBlock Text="Занять стол" Style="{StaticResource menuButtonText}" TextAlignment="Center" Margin="10,0,10,0"/>
+                </Button>
+                <Button  Name="unBusyButton"  Style="{StaticResource menuDialogButton}" Height="33" Margin="0 10 0 0"  Cursor="Hand" Width="220" Visibility="Collapsed" Click="unBusyButton_Click">
+                    <TextBlock Text="Освободить стол" Style="{StaticResource menuButtonText}" TextAlignment="Center" Margin="10,0,10,0"/>
+                </Button>
                 <StackPanel Name="reservationStackPanel">
                     <TextBlock  Text="{Binding Number, StringFormat={}№ Столика: {0}}" HorizontalAlignment="Center" Style="{StaticResource menuText}" Margin="0 10 0 0" FontSize="21"/>
                     <TextBlock  Text="{Binding Customer, StringFormat={}Посетитель: {0}}" HorizontalAlignment="Center" Style="{StaticResource menuText}" Margin="0 10 0 0"  FontSize="21"/>

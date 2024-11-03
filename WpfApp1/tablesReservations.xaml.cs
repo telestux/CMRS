@@ -148,7 +148,7 @@ namespace WpfApp1
                 string selectedTime = timeStartComboBox.SelectedItem.ToString();
                 List<string> endTimes = new List<string>();
                 TimeSpan selectedStartTime = TimeSpan.Parse(selectedTime);
-                for (TimeSpan currentTime = selectedStartTime.Add(new TimeSpan(0, 30, 0)); currentTime <= new TimeSpan(21, 0, 0); currentTime += new TimeSpan(0, 30, 0))
+                for (TimeSpan currentTime = selectedStartTime.Add(new TimeSpan(0, 30, 0)); currentTime <= new TimeSpan(22, 0, 0); currentTime += new TimeSpan(0, 30, 0))
                 {
                     endTimes.Add(currentTime.ToString(@"hh\:mm"));
                 }
@@ -159,7 +159,7 @@ namespace WpfApp1
                 string selectedTime = addTimeStartComboBox.SelectedItem.ToString();
                 List<string> endTimes = new List<string>();
                 TimeSpan selectedStartTime = TimeSpan.Parse(selectedTime);
-                for (TimeSpan currentTime = selectedStartTime.Add(new TimeSpan(0, 30, 0)); currentTime <= new TimeSpan(21, 0, 0); currentTime += new TimeSpan(0, 30, 0))
+                for (TimeSpan currentTime = selectedStartTime.Add(new TimeSpan(0, 30, 0)); currentTime <= new TimeSpan(22, 0, 0); currentTime += new TimeSpan(0, 30, 0))
                 {
                     endTimes.Add(currentTime.ToString(@"hh\:mm"));
                 }
@@ -317,7 +317,7 @@ namespace WpfApp1
             }
         }
 
-        private async void deleteButton_Click(object sender, RoutedEventArgs e)
+        private void deleteButton_Click(object sender, RoutedEventArgs e)
         {
            
             if (tableComboBox.SelectedItem != null && timeStartComboBox.SelectedItem != null && timeEndComboBox.SelectedItem != null && !string.IsNullOrEmpty(customerTextBox.Text) && !string.IsNullOrEmpty(phoneTextBox.Text) && (statusRadioButton1.IsChecked == true || statusRadioButton2.IsChecked == true))

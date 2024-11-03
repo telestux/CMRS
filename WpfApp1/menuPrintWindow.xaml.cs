@@ -74,5 +74,9 @@ namespace WpfApp1
                 this.Close();
             }
         }
+        private void DataGridRow_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+        }
     }
 }

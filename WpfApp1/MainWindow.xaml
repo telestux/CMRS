@@ -2,9 +2,10 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:converters="clr-namespace:WpfApp1.Services.Converters"
+       
         xmlns:uc="clr-namespace:Sales_Dashboard.UserControls"
         xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:local="clr-namespace:WpfApp1"
@@ -12,499 +13,356 @@
         WindowStartupLocation="CenterScreen" Background="Transparent"
         ResizeMode="CanResizeWithGrip"
         Title="CMRS" Height="780" Width="1650" MinWidth="1650" MinHeight="780" Icon="Images/icon.png">
-    <Border  Padding="20" Background="#FFECECF0" MouseDown="Border_MouseDown" MouseLeftButtonDown="Border_MouseLeftButtonDown">
-
+    <Border Padding="20" Background="#FFECECF0" MouseDown="Border_MouseDown" MouseLeftButtonDown="Border_MouseLeftButtonDown">
         <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="220"/>
-                <ColumnDefinition Width="902*"/>
-                <ColumnDefinition Width="11*"/>
-                <ColumnDefinition Width="427*"/>
-            </Grid.ColumnDefinitions>
+           
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="220"/>
+                    <ColumnDefinition Width="902*"/>
+                    <ColumnDefinition Width="11*"/>
+                    <ColumnDefinition Width="427*"/>
+                </Grid.ColumnDefinitions>
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="120"/>
-                <RowDefinition Height="158"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <!--Main-->
-            <Border Grid.RowSpan="3" CornerRadius="25" Background="White" >
-                <StackPanel>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="120"/>
+                    <RowDefinition Height="158"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <!--Main-->
+                <Border Grid.RowSpan="3" CornerRadius="25" Background="White" >
+                    <StackPanel>
 
-                    <!--Logo-->
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 10 0 10" Height="46" Width="218">
-                        <Image Source="/Images/applogo.png" Width="220" Height="57"/>
-                    </StackPanel>
-                    <Rectangle Height="3" Fill="#FF8A7253" Stroke="#FF8A7253" Width="223"/>
-                    <!--Menu Items-->
-                    <TextBlock Text="Основное" Style="{StaticResource menuTitle}" Foreground="Black"/>
-                    <Button Name="mainButton"  Style="{StaticResource menuButton}" Click="mainButton_Click">
-                        <StackPanel Orientation="Horizontal">
-                            <Icon:PackIconMaterial Kind="Home" Style="{StaticResource menuButtonIcon}"/>
-                            <TextBlock Text="Главная" Style="{StaticResource menuButtonText}"/>
+                        <!--Logo-->
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 10 0 10" Height="46" Width="218">
+                            <Image Source="/Images/applogo.png" Width="220" Height="57"/>
                         </StackPanel>
-                    </Button>
-
-                    <Button  Name="menuButton" Click="menuButton_Click" Style="{StaticResource menuButton}">
-                        <StackPanel Orientation="Horizontal">
-                            <Icon:PackIconMaterial Kind="ClipboardTextPlayOutline" Style="{StaticResource menuButtonIcon}"/>
-                            <TextBlock Text="Меню" Style="{StaticResource menuButtonText}"/>
-                        </StackPanel>
-                    </Button>
-
-                    <Button Name="tablesButton" Click="tablesButton_Click" Style="{StaticResource menuButton}">
-                        <StackPanel Orientation="Horizontal">
-                            <Icon:PackIconMaterial Kind="TableChair" Style="{StaticResource menuButtonIcon}"/>
-                            <TextBlock Text="Столики" Style="{StaticResource menuButtonText}"/>
-                        </StackPanel>
-                    </Button>
-
-                    <Button Name="analyticsButton" Style="{StaticResource menuButton}" Click="analyticsButton_Click">
-                        <StackPanel Orientation="Horizontal">
-                            <Icon:PackIconMaterial Kind="Poll" Style="{StaticResource menuButtonIcon}"/>
-                            <TextBlock Text="Аналитика" Style="{StaticResource menuButtonText}"/>
-                        </StackPanel>
-                    </Button>
-
-                    <TextBlock Text="Помощь" Style="{StaticResource menuTitle}" Foreground="Black"/>
-
-                    <Button Name="infoButton" Style="{StaticResource menuButton}" Click="infoButton_Click">
-                        <StackPanel Orientation="Horizontal">
-                            <Icon:PackIconMaterial Kind="InformationOutline" Style="{StaticResource menuButtonIcon}"/>
-                            <TextBlock Text="Информация" Style="{StaticResource menuButtonText}"/>
-                        </StackPanel>
-                    </Button>
-
-                </StackPanel>
-            </Border>
-            <Border Grid.Column="1" Style="{StaticResource whiteBorder}" Margin="20,0,0,26" Name="mainTopBorder" Grid.ColumnSpan="3" >
-                <Grid>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Name="mainHiBorder" Visibility="Collapsed" >
-                        <Border Width="44" Height="44" CornerRadius="30" Margin="5 0 20 0" Background="#FF8A7253">
-                            <Image Source="/Images/chef.png" Width="40" Height="40"/>
-                        </Border>
-                        <StackPanel VerticalAlignment="Center">
-                            <TextBlock Text="Привет, Алиса" Style="{StaticResource titleText}" FontSize="26" FontWeight="Bold"/>
-                            <TextBlock Text="Хорошего дня!" Foreground="#6C879A" Margin="0 3 0 0"/>
-                        </StackPanel>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Width="833" Margin="-200 0 0 0" Name="mainTop" Visibility="Collapsed">
-                        <TextBlock Text="Активных заказов" Style="{StaticResource menuText}" Margin="0 -4 0 0" Height="19"/>
-                        <Border Width="65" Height="30" CornerRadius="10" Margin="5 0 20 0" Background="#A0E182">
-                            <TextBlock Text="{Binding ActiveOrders}" Style="{StaticResource menuText}" Margin="0" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
-                        <TextBlock Text="Заказов за сегодня" Margin="20 0 0 0" Style="{StaticResource menuText}" Height="19"/>
-                        <Border Width="65" Height="30" CornerRadius="10" Background="#FFEFEFEF"  Margin="10 0 0 0">
-                            <TextBlock Text="{Binding TodayOrders}" Style="{StaticResource menuText}" Margin="0" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
-                        <TextBlock Text="Отменённых заказов" Style="{StaticResource menuText}" Height="19" Margin="40 0 0 0"/>
-                        <Border Width="65" Height="30" CornerRadius="10" Background="#FFE8A45F"  Margin="10 0 0 0">
-                            <TextBlock Text="{Binding CancelledOrders}" Style="{StaticResource menuText}" Margin="0" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Width="1279" Name="menuTopBorder" Visibility="Collapsed">
-                        <TextBlock Text="Редактирование меню" Style="{StaticResource menuText}" Height="36" Margin="0 0 0 0" FontSize="30"/>
-                        <Button Style="{StaticResource menuButton}" Name="menuResetButton" Margin="20 4 0 0" Height="30" Width="30" Click="menuResetButton_Click" Cursor="Hand">
-                            <Icon:PackIconMaterial Kind="Refresh" HorizontalAlignment="Center" Style="{StaticResource menuButtonIcon}" Margin="0 0 0 0"/>
-                        </Button>
-                        <Button Style="{StaticResource menuButton}" Name="menuMeatButton" Height="30" Width="100" Margin="5 4 0 0" Click="menuMeatButton_Click" Cursor="Hand">
-                            <TextBlock Text="Мясо" Style="{StaticResource menuButtonText}" TextAlignment="Center" Margin="10,0,10,0"/>
-                        </Button>
-                        <Button Style="{StaticResource menuButton}" Name="menuFishButton"  Height="30" Width="100" Margin="0 4 0 0" Click="menuFishButton_Click" Cursor="Hand">
-                            <TextBlock Text="Рыба" Style="{StaticResource menuButtonText}" TextAlignment="Center" Margin="10,0,10,0"/>
-                        </Button>
-                        <Button Style="{StaticResource menuButton}" Name="menuHotButton"  Height="30" Width="100" Margin="10 4 0 0" Click="menuHotButton_Click" Cursor="Hand">
-                            <TextBlock Text="Горячее" Style="{StaticResource menuButtonText}" TextAlignment="Center" Margin="10,0,10,0"/>
-                        </Button>
-                        <Button Style="{StaticResource menuButton}" Name="menuSoupsButton"  Height="30" Width="100" Margin="10 4 0 0" Click="menuSoupsButton_Click" Cursor="Hand">
-                            <TextBlock Text="Супы" Style="{StaticResource menuButtonText}" TextAlignment="Center" Margin="10,0,10,0"/>
-                        </Button>
-                        <Button Style="{StaticResource menuButton}" Name="menuSnacksButton"  Height="30" Width="100" Margin="10 4 0 0" Click="menuSnacksButton_Click" Cursor="Hand">
-                            <TextBlock Text="Закуски" Style="{StaticResource menuButtonText}" TextAlignment="Center" Margin="10,0,10,0"/>
-                        </Button>
-                        <Button Style="{StaticResource menuButton}" Name="menuDrinksButton"  Height="30" Width="100" Margin="10 4 0 0" Click="menuDrinksButton_Click" Cursor="Hand">
-                            <TextBlock Text="Напитки" Style="{StaticResource menuButtonText}" TextAlignment="Center" Margin="10,0,10,0"/>
-                        </Button>
-                        <Button Style="{StaticResource menuButton}" Name="menuSweatButton" Height="30" Width="100" Margin="10 4 0 0"  Cursor="Hand" Click="menuSweatButton_Click">
-                            <TextBlock Text="Десерты" Style="{StaticResource menuButtonText}" TextAlignment="Center" Margin="10,0,10,0"/>
-                        </Button>
-                        <Button Name="printButton"  Style="{StaticResource menuButton}" Width="40" Height="26" HorizontalAlignment="Right" Margin="50 5 0 0" Click="printButton_Click">
-                            <Icon:PackIconMaterial Kind="Printer" Width="20" Height="26" Style="{StaticResource menuButtonIcon}" Margin="10,0,0,0" VerticalAlignment="Center" />
-                        </Button>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Width="1279" Name="analyticsTopBorder" Visibility="Collapsed" >
-                        <TextBlock Text="Сводка" Style="{StaticResource menuText}" Height="36" Margin="0 0 0 0" FontSize="30"/>
-                        <Button Style="{StaticResource menuButton}" Name="analyticsDayButton" Height="30" Width="100" Margin="5 4 0 0" Cursor="Hand" Click="analyticsDayButton_Click">
-                            <TextBlock Text="День" Style="{StaticResource menuButtonText}" TextAlignment="Center" Margin="10,0,10,0"/>
-                        </Button>
-                        <Button Style="{StaticResource menuButton}" Name="analyticsWeekButton" Height="30" Width="100" Margin="5 4 0 0" Cursor="Hand" Click="analyticsWeekButton_Click">
-                            <TextBlock Text="Неделя" Style="{StaticResource menuButtonText}" TextAlignment="Center" Margin="10,0,10,0"/>
-                        </Button>
-                        <Button Style="{StaticResource menuButton}" Name="analyticsMonthButton"  Height="30" Width="100" Margin="5 4 0 0" Cursor="Hand" Click="analyticsMonthButton_Click">
-                            <TextBlock Text="Месяц" Style="{StaticResource menuButtonText}" TextAlignment="Center" Margin="10,0,10,0"/>
-                        </Button>
-                        <Button Style="{StaticResource menuButton}" Name="analyticsQuarterButton"  Height="30" Width="100" Margin="5 4 0 0" Cursor="Hand" Click="analyticsQuarterButton_Click">
-                            <TextBlock Text="Квартал" Style="{StaticResource menuButtonText}" TextAlignment="Center" Margin="10,0,10,0"/>
-                        </Button>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Width="1279" Name="tablesBorder" Visibility="Collapsed">
-                        <TextBlock Text="Свободных столиков" Style="{StaticResource menuText}" Margin="40 1 0 0" Height="21"/>
-                        <Border Width="65" Height="30" CornerRadius="10" Margin="5 4 20 0" Background="#A0E182">
-                            <TextBlock Name="tablesFreeTables"  Style="{StaticResource menuText}" Margin="0" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
-                        <TextBlock Text="Активные брони" Style="{StaticResource menuText}" Margin="40 1 0 0" Height="22"/>
-                        <Border Width="65" Height="30" CornerRadius="10" Margin="5 4 20 0" Background="#FFE8A45F">
-                            <TextBlock  Name="tablesActiveReservations" Style="{StaticResource menuText}" Margin="0" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
-                        <TextBlock Text="Занятых столиков" Style="{StaticResource menuText}" Margin="40 0 0 0" Height="19"/>
-                        <Border Width="65" Height="30" CornerRadius="10" Margin="5 4 20 0" Background="#FFE85959">
-                            <TextBlock Name="tablesBusyTables" Style="{StaticResource menuText}" Margin="0" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
-
-                        <Button Style="{StaticResource menuButton}" Width="310" Height="29" Margin="20 5 0 0" Click="Button_Click">
+                        <Rectangle Height="3" Fill="#FF8A7253" Stroke="#FF8A7253" Width="223"/>
+                        <!--Menu Items-->
+                        <TextBlock Text="Основное" Style="{StaticResource menuTitle}" Foreground="Black"/>
+                        <Button Name="mainButton"  Style="{StaticResource menuButton}" Click="mainButton_Click">
                             <StackPanel Orientation="Horizontal">
-                                <Icon:PackIconMaterial Kind="CalendarMonth" Width="20" Height="26" Style="{StaticResource menuButtonIcon}" Margin="10,0,0,0" VerticalAlignment="Center" />
-                                <TextBlock Text="Управление бронированием" Style="{StaticResource menuButtonText}" TextAlignment="Center" Height="22"/>
+                                <Icon:PackIconMaterial Kind="Home" Style="{StaticResource menuButtonIcon}"/>
+                                <TextBlock Text="Главная" Style="{StaticResource menuButtonText}"/>
                             </StackPanel>
                         </Button>
+
+                        <Button  Name="menuButton" Click="menuButton_Click" Style="{StaticResource menuButton}">
+                            <StackPanel Orientation="Horizontal">
+                                <Icon:PackIconMaterial Kind="ClipboardTextPlayOutline" Style="{StaticResource menuButtonIcon}"/>
+                                <TextBlock Text="Меню" Style="{StaticResource menuButtonText}"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Name="tablesButton" Click="tablesButton_Click" Style="{StaticResource menuButton}">
+                            <StackPanel Orientation="Horizontal">
+                                <Icon:PackIconMaterial Kind="TableChair" Style="{StaticResource menuButtonIcon}"/>
+                                <TextBlock Text="Столики" Style="{StaticResource menuButtonText}"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Name="analyticsButton" Style="{StaticResource menuButton}" Click="analyticsButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <Icon:PackIconMaterial Kind="Poll" Style="{StaticResource menuButtonIcon}"/>
+                                <TextBlock Text="Аналитика" Style="{StaticResource menuButtonText}"/>
+                            </StackPanel>
+                        </Button>
+
+                        <TextBlock Text="Помощь" Style="{StaticResource menuTitle}" Foreground="Black"/>
+
+                        <Button Name="infoButton" Style="{StaticResource menuButton}" Click="infoButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <Icon:PackIconMaterial Kind="InformationOutline" Style="{StaticResource menuButtonIcon}"/>
+                                <TextBlock Text="Информация" Style="{StaticResource menuButtonText}"/>
+                            </StackPanel>
+                        </Button>
+
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Width="1279" Name="infoBorder" Visibility="Collapsed">
-                        <TextBlock   Text="Информация о программе" Style="{StaticResource menuText}" Margin="470 1 0 0" Height="31" FontSize="25"/>
-                    </StackPanel>
-                </Grid>
-            </Border>
-            <Grid Grid.Column="1" Grid.Row="1" Margin="10,0,10,0" Grid.ColumnSpan="3" Name="mainDishBorder" Visibility="Collapsed">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="487*"/>
-                    <ColumnDefinition Width="408*"/>
-                    <ColumnDefinition Width="425*"/>
-                </Grid.ColumnDefinitions>
-                <Border Grid.Column="1" Style="{StaticResource whiteBorder}" Margin="10,0,3,0" >
+                </Border>
+                <Border Grid.Column="1" Style="{StaticResource whiteBorder}" Margin="20,0,0,26" Name="mainTopBorder" Grid.ColumnSpan="3" Visibility="Visible" >
                     <Grid>
-                        <TextBlock Text="Объём продаж в этом месяце" Style="{StaticResource menuText}" FontSize="16" Margin="0 -15 0 0"/>
-                        <TextBlock Text="{Binding MonthSells}" Style="{StaticResource menuText}" FontSize="13" Margin="0 5 0 0"/>
-                        <lvc:CartesianChart  LegendLocation="None" Name="TestChart" Margin="0,19,0,-14">
-
-
-                            <lvc:CartesianChart.Series >
-                                <lvc:LineSeries Values="{Binding ChartValues}" Fill="#A0E182" StrokeThickness="3" Title="За этот день: " Stroke="#A0E182" PointGeometrySize="0"/>
-                            </lvc:CartesianChart.Series>
-
-                            <lvc:CartesianChart.AxisX>
-                                <lvc:Axis Foreground="Black" Labels="{Binding Labels}" ShowLabels="True" Title="Дата" >
-                                    <lvc:Axis.Separator>
-                                        <lvc:Separator StrokeThickness="0" Step="1"/>
-                                    </lvc:Axis.Separator>
-                                </lvc:Axis>
-                            </lvc:CartesianChart.AxisX>
-
-                            <lvc:CartesianChart.AxisY>
-                                <lvc:Axis MinValue="0" MaxValue="{Binding Max}" Foreground="Black" ShowLabels="True" Title="Выручка руб.">
-                                    <lvc:Axis.Separator>
-                                        <lvc:Separator StrokeThickness="0"/>
-                                    </lvc:Axis.Separator>
-                                </lvc:Axis>
-                            </lvc:CartesianChart.AxisY>
-
-
-                        </lvc:CartesianChart>
-
-                    </Grid>
-
-                </Border>
-                <Border Grid.Column="0" Style="{StaticResource whiteBorder}" Margin="10,0,3,0" Name="mainTopDish" Visibility="Visible">
-                    <!--Chart-->
-                    <Grid Margin="-15,-10,-5,-10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="146*"></ColumnDefinition>
-                            <ColumnDefinition Width="0*"></ColumnDefinition>
-                            <ColumnDefinition Width="303*"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <Border CornerRadius="30" HorizontalAlignment="Center" Width="140">
-                            <Image Height="140" Width="140" Style="{StaticResource topDishImage}"/>
-                        </Border>
-                        <TextBlock Text="Блюдо месяца"  Grid.Column="2" Style="{StaticResource menuText}" FontSize="17" Margin="1,39,0,71" HorizontalAlignment="Left" Width="198"  FontFamily="Fonts/#Inter Medium"/>
-                        <TextBlock Text="{Binding Dish}"  Grid.Column="2" Style="{StaticResource menuText}" FontSize="24" Margin="1,10,0,100" HorizontalAlignment="Left" Width="284" />
-                        <TextBlock Text="{Binding OrdersCount}"  Grid.Column="2" Style="{StaticResource menuText}" FontSize="16" FontFamily="Fonts/#Inter Medium" Margin="1,103,0,13" HorizontalAlignment="Left" Width="98"/>
-                    </Grid>
-
-                </Border>
-                <Border Grid.Column="2" Style="{StaticResource whiteBorder}" Margin="10,0,-12,0">
-                    <!--Chart-->
-                    <Grid>
-                        <TextBlock Text="Заказы за месяц" Style="{StaticResource menuText}" FontSize="16" Margin="0 -15 0 0"/>
-                        <TextBlock Text="{Binding MonthOrdersCount}" Style="{StaticResource menuText}" FontSize="13" Margin="0 5 0 0"/>
-                        <lvc:CartesianChart  LegendLocation="None" Margin="0,19,0,-14">
-
-                            <lvc:CartesianChart.Series >
-                                <lvc:LineSeries Values="{Binding MonthOrdersChartValues}" Fill="#FFE8A45F" StrokeThickness="3" Title="За этот день: " Stroke="#FFE8A45F" PointGeometrySize="0"/>
-                            </lvc:CartesianChart.Series>
-
-                            <lvc:CartesianChart.AxisX>
-                                <lvc:Axis Foreground="Black" Labels="{Binding Labels3}" ShowLabels="True" Title="Дата" >
-                                    <lvc:Axis.Separator>
-                                        <lvc:Separator StrokeThickness="0" Step="1"/>
-                                    </lvc:Axis.Separator>
-                                </lvc:Axis>
-                            </lvc:CartesianChart.AxisX>
-
-                            <lvc:CartesianChart.AxisY>
-                                <lvc:Axis MinValue="0" MaxValue="{Binding MonthOrdersMax}" Foreground="Black" ShowLabels="True" Title="Кол.во заказов">
-                                    <lvc:Axis.Separator>
-                                        <lvc:Separator StrokeThickness="0"/>
-                                    </lvc:Axis.Separator>
-                                </lvc:Axis>
-                            </lvc:CartesianChart.AxisY>
-
-
-                        </lvc:CartesianChart>
-
-                    </Grid>
-
-                </Border>
-            </Grid>
-            <Border Grid.Column="1" Grid.Row="2" Style="{StaticResource whiteBorder}" Margin="20,20,0,0" Name="main3Border" Visibility="Collapsed">
-                <Grid Margin="10 5">
-                    <TextBlock Text="Продажи за 3 последних месяца" Style="{StaticResource titleText}" Foreground="Black"/>
-                    <uc:Legends HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 8 10 0" FirstMonth="{Binding FirstMonthText}" SecondMonth="{Binding SecondMonthText}" ThirdMonth="{Binding ThirdMonthText}"/>
-                    <lvc:CartesianChart Margin="5,40,0,23" LegendLocation="None" >
-
-                        <lvc:CartesianChart.AxisX>
-                            <lvc:Axis ShowLabels="True" Foreground="Black" Labels="{Binding Labels2}" Title="Дата">
-                                <lvc:Axis.Separator>
-                                    <lvc:Separator StrokeThickness="0" Step="1"/>
-                                </lvc:Axis.Separator>
-                            </lvc:Axis>
-                        </lvc:CartesianChart.AxisX>
-
-                        <lvc:CartesianChart.AxisY>
-                            <lvc:Axis MinValue="0" MaxValue="{Binding Max2Value}" Foreground="Black" ShowLabels="True" Title="Выручка руб.">
-                                <lvc:Axis.Separator>
-                                    <lvc:Separator StrokeThickness="0"/>
-                                </lvc:Axis.Separator>
-                            </lvc:Axis>
-                        </lvc:CartesianChart.AxisY>
-
-                        <lvc:CartesianChart.Series>
-
-                            <lvc:LineSeries Values="{Binding ThirdMonthValues}" Fill="#FFBFF9A0" PointGeometrySize="0" StrokeThickness="3" Title="За этот день: "  Stroke="#FFBFF9A0"/>
-                            <lvc:LineSeries Values="{Binding SecondMonthValues}" Fill="#FFE49762" StrokeThickness="3" Title="За этот день: " PointGeometrySize="0" Stroke="#FFE49762"/>
-                            <lvc:LineSeries Values="{Binding FirstMonthValues}" Fill="#FF81E098" StrokeThickness="3" Title="За этот день: " PointGeometrySize="0"  Stroke="#FF81E098"/>
-                        </lvc:CartesianChart.Series>
-                    </lvc:CartesianChart>
-
-                    <Grid VerticalAlignment="Bottom" Margin="10 0 0 0">
-                        <Icon:PackIconMaterial Kind="Information" Foreground="#FF81E098" />
-                        <TextBlock TextWrapping="Wrap" Margin="30 0 0 0" LineHeight="18" Foreground="{StaticResource GreyColor}" Text="Статистика продаж по дням за последние 3 календарных месяца"/>
-                    </Grid>
-
-                </Grid>
-            </Border>
-            <Grid Grid.Column="3" Margin="2,20,0,0" Grid.Row="2" Name="mainLastGrid" Visibility="Collapsed">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Border Style="{StaticResource whiteBorder}" Grid.Row="1" >
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="23*"/>
-                            <RowDefinition Height="3*"/>
-                            <RowDefinition Height="376*"/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Text="Последние заказы" Style="{StaticResource menuText}" Grid.Row="0" Margin="0,1,10,1"/>
-                        <DataGrid x:Name="DishesGrid" AutoGenerateColumns="False" HorizontalGridLinesBrush="DarkGray"
-RowBackground="LightGray" AlternatingRowBackground="White" Visibility="Visible" Grid.Row="2" CanUserAddRows="False" CanUserDeleteRows="False">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="ID" Binding="{Binding Path=Orders_ID}" Width="auto">
-                                    <DataGridTextColumn.ElementStyle>
-                                        <Style TargetType="{x:Type TextBlock}">
-                                            <Setter Property="Background" Value="{Binding Path='Orders_Status', Converter={converters:StringToBrushConverter}}" />
-                                            <Setter Property="FontFamily" Value="Fonts/#Inter Regular"/>
-                                            <Setter Property="TextAlignment" Value="Center"/>
-                                            <Setter Property="FontSize" Value="20"/>
-                                        </Style>
-                                    </DataGridTextColumn.ElementStyle>
-                                </DataGridTextColumn>
-                                <DataGridTextColumn Header="Статус" Binding="{Binding Path=Orders_Status}" Width="auto">
-                                    <DataGridTextColumn.ElementStyle>
-                                        <Style TargetType="{x:Type TextBlock}">
-                                            <Setter Property="Background" Value="{Binding Path='Orders_Status', Converter={converters:StringToBrushConverter}}" />
-                                            <Setter Property="FontFamily" Value="Fonts/#Inter Regular"/>
-                                            <Setter Property="TextAlignment" Value="Center"/>
-                                            <Setter Property="FontSize" Value="20"/>
-                                        </Style>
-                                    </DataGridTextColumn.ElementStyle>
-                                </DataGridTextColumn>
-                                <DataGridTextColumn Header="Заказан" Binding="{Binding Path=Orders_Time}" Width="55">
-                                    <DataGridTextColumn.ElementStyle>
-                                        <Style TargetType="{x:Type TextBlock}">
-                                            <Setter Property="Background" Value="{Binding Path='Orders_Status', Converter={converters:StringToBrushConverter}}" />
-                                            <Setter Property="FontFamily" Value="Fonts/#Inter Regular"/>
-                                            <Setter Property="TextAlignment" Value="Center"/>
-                                            <Setter Property="FontSize" Value="20"/>
-                                        </Style>
-                                    </DataGridTextColumn.ElementStyle>
-                                </DataGridTextColumn>
-                                <DataGridTextColumn Header="Подан" Binding="{Binding Path=Orders_Serving_time}" Width="55">
-                                    <DataGridTextColumn.ElementStyle>
-                                        <Style TargetType="{x:Type TextBlock}">
-                                            <Setter Property="Background" Value="{Binding Path='Orders_Status', Converter={converters:StringToBrushConverter}}" />
-                                            <Setter Property="FontFamily" Value="Fonts/#Inter Regular"/>
-                                            <Setter Property="TextAlignment" Value="Center"/>
-                                            <Setter Property="FontSize" Value="20"/>
-                                        </Style>
-                                    </DataGridTextColumn.ElementStyle>
-                                </DataGridTextColumn>
-                                <DataGridTextColumn Header="Заказ" Binding="{Binding Path=Orders_Dish_List}" Width="auto">
-                                    <DataGridTextColumn.ElementStyle>
-                                        <Style TargetType="{x:Type TextBlock}">
-                                            <Setter Property="Background" Value="{Binding Path='Orders_Status', Converter={converters:StringToBrushConverter}}" />
-                                            <Setter Property="FontFamily" Value="Fonts/#Inter Regular"/>
-                                            <Setter Property="FontSize" Value="20"/>
-                                        </Style>
-                                    </DataGridTextColumn.ElementStyle>
-                                </DataGridTextColumn>
-                            </DataGrid.Columns>
-                        </DataGrid>
-                    </Grid>
-                </Border>
-            </Grid>
-            <!--Menu-->
-            <Grid Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3" Margin="20,0,0,0" Grid.RowSpan="2" Name="menuGrid" Visibility="Collapsed">
-                <ListView Name="menuListView" SelectionChanged="menuListView_SelectionChanged" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Center" Foreground="Black" Background="#FFECECF0" BorderBrush="{x:Null}" >
-                    <ListView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <Border Grid.Row="1" Style="{StaticResource whiteBorder}"  CornerRadius="20"  Padding="0 0 0 0" Margin="0 0 0 0" Width="300" Height="270">
-                                <Grid >
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="auto"/>
-                                        <RowDefinition Height="auto"/>
-                                        <RowDefinition Height="auto"/>
-                                    </Grid.RowDefinitions>
-                                    <Image Source="{Binding Image}" Grid.Row="0" Stretch="UniformToFill" HorizontalAlignment="Center" Margin="5" Width="200" Height="200" VerticalAlignment="Center"/>
-                                    <TextBlock Name="fo" Text="{Binding Name}" HorizontalAlignment="Center"  Grid.Row="1" Style="{StaticResource menuText}" FontSize="18"/>
-                                    <TextBlock Text="{Binding Price, StringFormat={}{0} ₽}" Grid.Row="2" Style="{StaticResource menuText}" Margin="10 10" HorizontalAlignment="Right" FontSize="16"/>
-                                    <TextBlock Text="{Binding Type, StringFormat={}Вид: {0}}" Grid.Row="2" Style="{StaticResource menuText}" Margin="10 10" HorizontalAlignment="Left" FontSize="16"/>
-                                </Grid>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Name="mainHiBorder" Visibility="Collapsed" >
+                            <Border Width="44" Height="44" CornerRadius="30" Margin="5 0 20 0" Background="#FF8A7253">
+                                <Image Source="/Images/user1Pic.png" Width="40" Height="40"/>
                             </Border>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </Grid>
-            <!--Analytics-->
-            <Grid Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3" Margin="20,0,0,0" Grid.RowSpan="2" Name="analytcsGrid" Visibility="Collapsed">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="332*"/>
-                    <ColumnDefinition Width="357*"/>
-                    <ColumnDefinition Width="349*"/>
-                    <ColumnDefinition Width="332*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="32*"/>
-                    <RowDefinition Height="119*"/>
-                </Grid.RowDefinitions>
-                <Border Grid.Column="0" Style="{StaticResource whiteBorder}" Name="analytics1Border" >
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="50*"/>
-                            <ColumnDefinition Width="50*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="31*"/>
-                            <RowDefinition Height="68*"/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Text="Всего посещений" VerticalAlignment="Center" Style="{StaticResource menuText}" FontSize="20" HorizontalAlignment="Center" Grid.Column="0" Grid.ColumnSpan="2"/>
-                        <!--<TextBlock Text="{Binding CustomersCount}" Grid.Row="1" FontSize="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=Height, Converter={converters:WindowSizeToFontSizeConverter}, ConverterParameter=1}" Grid.Column="0" Style="{StaticResource menuText}" VerticalAlignment="Center" HorizontalAlignment="Right" />-->
-                        <TextBlock Name="CustomersCount" Text="" Grid.Row="1" FontSize="40" Grid.Column="0" Style="{StaticResource menuText}" VerticalAlignment="Center" HorizontalAlignment="Right" Height="48" Margin="10,0,0,0"/>
-                        <TextBlock Name="CustomersDate" Text="" Grid.Row="1" Grid.Column="1" Style="{StaticResource menuText}" TextAlignment="Center" HorizontalAlignment="Left" FontSize="14" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="#FF7F7F7F" LineHeight="16"/>
-                    </Grid>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Привет, Виктория" Style="{StaticResource titleText}" FontSize="26" FontWeight="Bold"/>
+                                <TextBlock Text="Хорошего дня!" Foreground="#6C879A" Margin="0 3 0 0"/>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Width="833" Margin="-200 0 0 0" Name="mainTop" Visibility="Collapsed">
+                            <TextBlock Text="Активных заказов" Style="{StaticResource menuText}" Margin="0 -4 0 0" Height="19"/>
+                            <Border Width="65" Height="30" CornerRadius="10" Margin="5 0 20 0" Background="#A0E182">
+                                <TextBlock Name="ActiveOrders" Text="0" Style="{StaticResource menuText}" Margin="0" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                            <TextBlock Text="Заказов за сегодня" Margin="20 0 0 0" Style="{StaticResource menuText}" Height="19"/>
+                            <Border Width="65" Height="30" CornerRadius="10" Background="#FFEFEFEF"  Margin="10 0 0 0">
+                                <TextBlock Name="TodayOrders" Text="0" Style="{StaticResource menuText}" Margin="0" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                            <TextBlock Text="Отменённых заказов" Style="{StaticResource menuText}" Height="19" Margin="40 0 0 0"/>
+                            <Border Width="65" Height="30" CornerRadius="10" Background="#FFE8A45F"  Margin="10 0 0 0">
+                                <TextBlock Name="CancelledOrders" Text="0" Style="{StaticResource menuText}" Margin="0" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Width="1279" Name="menuTopBorder" Visibility="Collapsed">
+                            <TextBlock Text="Редактирование меню" Style="{StaticResource menuText}" Height="36" Margin="0 0 0 0" FontSize="30"/>
+                            <Button Style="{StaticResource menuButton}" Name="menuResetButton" Margin="20 4 0 0" Height="30" Width="30" Click="menuResetButton_Click" Cursor="Hand">
+                                <Icon:PackIconMaterial Kind="Refresh" HorizontalAlignment="Center" Style="{StaticResource menuButtonIcon}" Margin="0 0 0 0"/>
+                            </Button>
+                            <Button Style="{StaticResource menuButton}" Name="menuMeatButton" Height="30" Width="100" Margin="5 4 0 0" Click="menuMeatButton_Click" Cursor="Hand">
+                                <TextBlock Text="Мясо" Style="{StaticResource menuButtonText}" TextAlignment="Center" Margin="10,0,10,0"/>
+                            </Button>
+                            <Button Style="{StaticResource menuButton}" Name="menuFishButton"  Height="30" Width="100" Margin="0 4 0 0" Click="menuFishButton_Click" Cursor="Hand">
+                                <TextBlock Text="Рыба" Style="{StaticResource menuButtonText}" TextAlignment="Center" Margin="10,0,10,0"/>
+                            </Button>
+                            <Button Style="{StaticResource menuButton}" Name="menuHotButton"  Height="30" Width="100" Margin="10 4 0 0" Click="menuHotButton_Click" Cursor="Hand">
+                                <TextBlock Text="Горячее" Style="{StaticResource menuButtonText}" TextAlignment="Center" Margin="10,0,10,0"/>
+                            </Button>
+                            <Button Style="{StaticResource menuButton}" Name="menuSoupsButton"  Height="30" Width="100" Margin="10 4 0 0" Click="menuSoupsButton_Click" Cursor="Hand">
+                                <TextBlock Text="Супы" Style="{StaticResource menuButtonText}" TextAlignment="Center" Margin="10,0,10,0"/>
+                            </Button>
+                            <Button Style="{StaticResource menuButton}" Name="menuSnacksButton"  Height="30" Width="100" Margin="10 4 0 0" Click="menuSnacksButton_Click" Cursor="Hand">
+                                <TextBlock Text="Закуски" Style="{StaticResource menuButtonText}" TextAlignment="Center" Margin="10,0,10,0"/>
+                            </Button>
+                            <Button Style="{StaticResource menuButton}" Name="menuDrinksButton"  Height="30" Width="100" Margin="10 4 0 0" Click="menuDrinksButton_Click" Cursor="Hand">
+                                <TextBlock Text="Напитки" Style="{StaticResource menuButtonText}" TextAlignment="Center" Margin="10,0,10,0"/>
+                            </Button>
+                            <Button Style="{StaticResource menuButton}" Name="menuSweatButton" Height="30" Width="100" Margin="10 4 0 0"  Cursor="Hand" Click="menuSweatButton_Click">
+                                <TextBlock Text="Десерты" Style="{StaticResource menuButtonText}" TextAlignment="Center" Margin="10,0,10,0"/>
+                            </Button>
+                            <Button Name="printButton"  Style="{StaticResource menuButton}" Width="40" Height="26" HorizontalAlignment="Right" Margin="50 5 0 0" Click="printButton_Click">
+                                <Icon:PackIconMaterial Kind="Printer" Width="20" Height="26" Style="{StaticResource menuButtonIcon}" Margin="10,0,0,0" VerticalAlignment="Center" />
+                            </Button>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Width="1279" Name="analyticsTopBorder" Visibility="Visible" >
+                            <TextBlock Text="Сводка" Style="{StaticResource menuText}" Height="36" Margin="0 0 0 0" FontSize="30" HorizontalAlignment="Left"/>
+                            <Button Style="{StaticResource menuButton}" Name="analyticsDayButton" Height="30" Width="100" Margin="5 4 0 0" Cursor="Hand" Click="analyticsDayButton_Click">
+                                <TextBlock Text="День" Style="{StaticResource menuButtonText}" TextAlignment="Center" Margin="10,0,10,0"/>
+                            </Button>
+                            <Button Style="{StaticResource menuButton}" Name="analyticsWeekButton" Height="30" Width="100" Margin="5 4 0 0" Cursor="Hand" Click="analyticsWeekButton_Click">
+                                <TextBlock Text="Неделя" Style="{StaticResource menuButtonText}" TextAlignment="Center" Margin="10,0,10,0"/>
+                            </Button>
+                            <Button Style="{StaticResource menuButton}" Name="analyticsMonthButton"  Height="30" Width="100" Margin="5 4 0 0" Cursor="Hand" Click="analyticsMonthButton_Click">
+                                <TextBlock Text="Месяц" Style="{StaticResource menuButtonText}" TextAlignment="Center" Margin="10,0,10,0"/>
+                            </Button>
+                            <Button Style="{StaticResource menuButton}" Name="analyticsQuarterButton"  Height="30" Width="100" Margin="5 4 0 0" Cursor="Hand" Click="analyticsQuarterButton_Click">
+                                <TextBlock Text="Квартал" Style="{StaticResource menuButtonText}" TextAlignment="Center" Margin="10,0,10,0"/>
+                            </Button>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Width="1279" Name="tablesBorder" Visibility="Collapsed">
+                            <TextBlock Text="Свободных столиков" Style="{StaticResource menuText}" Margin="40 1 0 0" Height="21"/>
+                            <Border Width="65" Height="30" CornerRadius="10" Margin="5 4 20 0" Background="#A0E182">
+                                <TextBlock Name="tablesFreeTables"  Style="{StaticResource menuText}" Margin="0" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                            <TextBlock Text="Активные брони" Style="{StaticResource menuText}" Margin="40 1 0 0" Height="22"/>
+                            <Border Width="65" Height="30" CornerRadius="10" Margin="5 4 20 0" Background="#FFE8A45F">
+                                <TextBlock  Name="tablesActiveReservations" Style="{StaticResource menuText}" Margin="0" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                            <TextBlock Text="Занятых столиков" Style="{StaticResource menuText}" Margin="40 0 0 0" Height="19"/>
+                            <Border Width="65" Height="30" CornerRadius="10" Margin="5 4 20 0" Background="#FFE85959">
+                                <TextBlock Name="tablesBusyTables" Style="{StaticResource menuText}" Margin="0" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
 
-                </Border>
-                <Border Grid.Column="1" Style="{StaticResource whiteBorder}" Margin="10,0,10,0" Name="analytics2Border" >
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="50*"/>
-                            <ColumnDefinition Width="50*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="31*"/>
-                            <RowDefinition Height="68*"/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Text="Прирост выручки" VerticalAlignment="Center" Style="{StaticResource menuText}" FontSize="20" HorizontalAlignment="Center" Grid.Column="0" Grid.ColumnSpan="2"/>
-                        <!--<TextBlock Text="{Binding CustomersCount}" Grid.Row="1" FontSize="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=Height, Converter={converters:WindowSizeToFontSizeConverter}, ConverterParameter=1}" Grid.Column="0" Style="{StaticResource menuText}" VerticalAlignment="Center" HorizontalAlignment="Right" />-->
-                        <Border Name="revenueBorder" Style="{StaticResource whiteBorder}" Background="#FFEA7272" Padding="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="117" >
-                            <TextBlock  Name="revenueMoney" Text="124%"  FontSize="40" Grid.Column="0" Style="{StaticResource menuText}" Height="48" HorizontalAlignment="Center" />
-                        </Border>
-                        <TextBlock Name="revenueText"  Grid.Row="1" Grid.Column="1" Style="{StaticResource menuText}" TextAlignment="Center" HorizontalAlignment="Left" FontSize="15" VerticalAlignment="Center" Margin="0,0,0,0" Foreground="#FF7F7F7F" LineHeight="16"/>
+                            <Button Style="{StaticResource menuButton}" Width="310" Height="29" Margin="20 5 0 0" Click="Button_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <Icon:PackIconMaterial Kind="CalendarMonth" Width="20" Height="26" Style="{StaticResource menuButtonIcon}" Margin="10,0,0,0" VerticalAlignment="Center" />
+                                    <TextBlock Text="Управление бронированием" Style="{StaticResource menuButtonText}" TextAlignment="Center" Height="22"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Width="1279" Name="infoBorder" Visibility="Collapsed">
+                            <TextBlock   Text="Информация о программе" Style="{StaticResource menuText}" Margin="470 1 0 0" Height="31" FontSize="25"/>
+                        </StackPanel>
                     </Grid>
-
                 </Border>
-                <Border Grid.Column="2" Style="{StaticResource whiteBorder}" Margin="0,0,10,0" Name="analytics3Border" >
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="50*"/>
-                            <ColumnDefinition Width="50*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="31*"/>
-                            <RowDefinition Height="68*"/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Text="Прирост посетителей" VerticalAlignment="Center" Style="{StaticResource menuText}" FontSize="20" HorizontalAlignment="Center" Grid.Column="0" Grid.ColumnSpan="2"/>
-                        <!--<TextBlock Text="{Binding CustomersCount}" Grid.Row="1" FontSize="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=Height, Converter={converters:WindowSizeToFontSizeConverter}, ConverterParameter=1}" Grid.Column="0" Style="{StaticResource menuText}" VerticalAlignment="Center" HorizontalAlignment="Right" />-->
-                        <Border Name="customersBorder" Style="{StaticResource whiteBorder}" Background="#FFE8A45F" Padding="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="117" >
-                            <TextBlock Name="customersPercent" Text="124%"  FontSize="40" Grid.Column="0" Style="{StaticResource menuText}" Height="48" HorizontalAlignment="Center" />
-                        </Border>
-                        <TextBlock Name="customersText" Grid.Row="1" Grid.Column="1" Style="{StaticResource menuText}" TextAlignment="Center" HorizontalAlignment="Left" FontSize="15" VerticalAlignment="Center" Margin="0,0,0,0" Foreground="#FF7F7F7F" LineHeight="16"/>
+                <Grid Grid.Column="1" Grid.Row="1" Margin="10,0,10,0" Grid.ColumnSpan="3" Name="mainDishBorder" Visibility="Collapsed">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="487*"/>
+                        <ColumnDefinition Width="408*"/>
+                        <ColumnDefinition Width="425*"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Column="1" Style="{StaticResource whiteBorder}" Margin="10,0,3,0" >
+                        <Grid>
+                            <TextBlock Text="Объём продаж в этом месяце" Style="{StaticResource menuText}" FontSize="16" Margin="0 -15 0 0"/>
+                            <TextBlock Text="{Binding MonthSells}" Style="{StaticResource menuText}" FontSize="13" Margin="0 5 0 0"/>
+                            <lvc:CartesianChart  LegendLocation="None" Name="TestChart" Margin="0,19,0,-14">
+
+
+                                <lvc:CartesianChart.Series >
+                                    <lvc:LineSeries Values="{Binding ChartValues}" Fill="#A0E182" StrokeThickness="3" Title="За этот день: " Stroke="#A0E182" PointGeometrySize="0"/>
+                                </lvc:CartesianChart.Series>
+
+                                <lvc:CartesianChart.AxisX>
+                                    <lvc:Axis Foreground="Black" Labels="{Binding Labels}" ShowLabels="True" Title="Дата" >
+                                        <lvc:Axis.Separator>
+                                            <lvc:Separator StrokeThickness="0" Step="1"/>
+                                        </lvc:Axis.Separator>
+                                    </lvc:Axis>
+                                </lvc:CartesianChart.AxisX>
+
+                                <lvc:CartesianChart.AxisY>
+                                    <lvc:Axis MinValue="0" MaxValue="{Binding Max}" Foreground="Black" ShowLabels="True" Title="Выручка руб.">
+                                        <lvc:Axis.Separator>
+                                            <lvc:Separator StrokeThickness="0"/>
+                                        </lvc:Axis.Separator>
+                                    </lvc:Axis>
+                                </lvc:CartesianChart.AxisY>
+
+
+                            </lvc:CartesianChart>
+
+                        </Grid>
+
+                    </Border>
+                    <Border Grid.Column="0" Style="{StaticResource whiteBorder}" Margin="10,0,3,0" Name="mainTopDish" Visibility="Visible">
+                        <!--Chart-->
+                        <Grid Margin="-15,-10,-5,-10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="146*"></ColumnDefinition>
+                                <ColumnDefinition Width="0*"></ColumnDefinition>
+                                <ColumnDefinition Width="303*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Border CornerRadius="30" HorizontalAlignment="Center" Width="140">
+                                <Image Height="140" Width="140" Style="{StaticResource topDishImage}"/>
+                            </Border>
+                            <TextBlock Text="Блюдо месяца"  Grid.Column="2" Style="{StaticResource menuText}" FontSize="17" Margin="1,39,0,71" HorizontalAlignment="Left" Width="198"  FontFamily="Fonts/#Inter Medium"/>
+                            <TextBlock Text="{Binding Dish}"  Grid.Column="2" Style="{StaticResource menuText}" FontSize="24" Margin="1,10,0,100" HorizontalAlignment="Left" Width="284" />
+                            <TextBlock Text="{Binding OrdersCount}"  Grid.Column="2" Style="{StaticResource menuText}" FontSize="16" FontFamily="Fonts/#Inter Medium" Margin="1,103,0,13" HorizontalAlignment="Left" Width="98"/>
+                        </Grid>
+
+                    </Border>
+                    <Border Grid.Column="2" Style="{StaticResource whiteBorder}" Margin="10,0,-12,0">
+                        <!--Chart-->
+                        <Grid>
+                            <TextBlock Text="Заказы за месяц" Style="{StaticResource menuText}" FontSize="16" Margin="0 -15 0 0"/>
+                            <TextBlock Text="{Binding MonthOrdersCount}" Style="{StaticResource menuText}" FontSize="13" Margin="0 5 0 0"/>
+                            <lvc:CartesianChart  LegendLocation="None" Margin="0,19,0,-14">
+
+                                <lvc:CartesianChart.Series >
+                                    <lvc:LineSeries Values="{Binding MonthOrdersChartValues}" Fill="#FFE8A45F" StrokeThickness="3" Title="За этот день: " Stroke="#FFE8A45F" PointGeometrySize="0"/>
+                                </lvc:CartesianChart.Series>
+
+                                <lvc:CartesianChart.AxisX>
+                                    <lvc:Axis Foreground="Black" Labels="{Binding Labels3}" ShowLabels="True" Title="Дата" >
+                                        <lvc:Axis.Separator>
+                                            <lvc:Separator StrokeThickness="0" Step="1"/>
+                                        </lvc:Axis.Separator>
+                                    </lvc:Axis>
+                                </lvc:CartesianChart.AxisX>
+
+                                <lvc:CartesianChart.AxisY>
+                                    <lvc:Axis MinValue="0" MaxValue="{Binding MonthOrdersMax}" Foreground="Black" ShowLabels="True" Title="Кол.во заказов">
+                                        <lvc:Axis.Separator>
+                                            <lvc:Separator StrokeThickness="0"/>
+                                        </lvc:Axis.Separator>
+                                    </lvc:Axis>
+                                </lvc:CartesianChart.AxisY>
+
+
+                            </lvc:CartesianChart>
+
+                        </Grid>
+
+                    </Border>
+                </Grid>
+                <Border Grid.Column="1" Grid.Row="2" Style="{StaticResource whiteBorder}" Margin="20,20,0,0" Name="main3Border" Visibility="Collapsed">
+                    <Grid Margin="10 5">
+                        <TextBlock Text="Продажи за 3 последних месяца" Style="{StaticResource titleText}" Foreground="Black"/>
+                        <uc:Legends HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 8 10 0" FirstMonth="{Binding FirstMonthText}" SecondMonth="{Binding SecondMonthText}" ThirdMonth="{Binding ThirdMonthText}"/>
+                        <lvc:CartesianChart Margin="5,40,0,23" LegendLocation="None" >
+
+                            <lvc:CartesianChart.AxisX>
+                                <lvc:Axis ShowLabels="True" Foreground="Black" Labels="{Binding Labels2}" Title="Дата">
+                                    <lvc:Axis.Separator>
+                                        <lvc:Separator StrokeThickness="0" Step="1"/>
+                                    </lvc:Axis.Separator>
+                                </lvc:Axis>
+                            </lvc:CartesianChart.AxisX>
+
+                            <lvc:CartesianChart.AxisY>
+                                <lvc:Axis MinValue="0" MaxValue="{Binding Max2Value}" Foreground="Black" ShowLabels="True" Title="Выручка руб.">
+                                    <lvc:Axis.Separator>
+                                        <lvc:Separator StrokeThickness="0"/>
+                                    </lvc:Axis.Separator>
+                                </lvc:Axis>
+                            </lvc:CartesianChart.AxisY>
+
+                            <lvc:CartesianChart.Series>
+
+                                <lvc:LineSeries Values="{Binding ThirdMonthValues}" Fill="#FFBFF9A0" PointGeometrySize="0" StrokeThickness="3" Title="За этот день: "  Stroke="#FFBFF9A0"/>
+                                <lvc:LineSeries Values="{Binding SecondMonthValues}" Fill="#FFE49762" StrokeThickness="3" Title="За этот день: " PointGeometrySize="0" Stroke="#FFE49762"/>
+                                <lvc:LineSeries Values="{Binding FirstMonthValues}" Fill="#FF81E098" StrokeThickness="3" Title="За этот день: " PointGeometrySize="0"  Stroke="#FF81E098"/>
+                            </lvc:CartesianChart.Series>
+                        </lvc:CartesianChart>
+
+                        <Grid VerticalAlignment="Bottom" Margin="10 0 0 0">
+                            <Icon:PackIconMaterial Kind="Information" Foreground="#FF81E098" />
+                            <TextBlock TextWrapping="Wrap" Margin="30 0 0 0" LineHeight="18" Foreground="{StaticResource GreyColor}" Text="Статистика продаж по дням за последние 3 календарных месяца"/>
+                        </Grid>
+
                     </Grid>
-
                 </Border>
-                <Border Grid.Column="3" Style="{StaticResource whiteBorder}" Name="analytics4Border" >
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="31*"/>
-                            <RowDefinition Height="68*"/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Text="Среднее время ожидания гостя" VerticalAlignment="Center" Style="{StaticResource menuText}" FontSize="17" HorizontalAlignment="Center" Grid.Column="0" Grid.ColumnSpan="2"/>
-                        <TextBlock Name="timeWaiting" Text="39 минут" Grid.Row="1" FontSize="40" Grid.Column="0" Style="{StaticResource menuText}" VerticalAlignment="Center" HorizontalAlignment="Center" Height="48" Margin="10,0,0,0"/>
-                    </Grid>
-
-                </Border>
-                <Grid Grid.Column="3" Grid.Row="2">
+                <Grid Grid.Column="3" Margin="2,20,0,0" Grid.Row="2" Name="mainLastGrid" Visibility="Collapsed">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <Border Style="{StaticResource whiteBorder}" Grid.Row="1" Margin="0 10 0 0" Name="analytics6Border" >
+                    <Border Style="{StaticResource whiteBorder}" Grid.Row="1" >
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="23*"/>
                                 <RowDefinition Height="3*"/>
                                 <RowDefinition Height="376*"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Text="Топ официантов" Style="{StaticResource menuText}" Grid.Row="0" Margin="0,1,10,1"/>
-                            <DataGrid Name="GarconsGrid" AutoGenerateColumns="False" HorizontalGridLinesBrush="DarkGray"
-RowBackground="LightGray" AlternatingRowBackground="White" Visibility="Visible" Grid.Row="2" CanUserAddRows="False" CanUserDeleteRows="False" >
+                            <TextBlock Text="Последние заказы" Style="{StaticResource menuText}" Grid.Row="0" Margin="0,1,10,1"/>
+                            <DataGrid x:Name="DishesGrid" AutoGenerateColumns="False" HorizontalGridLinesBrush="DarkGray"
+RowBackground="LightGray" AlternatingRowBackground="White" Visibility="Visible" Grid.Row="2" CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True">
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Официант" Binding="{Binding Path=GarconName}" Width="auto">
+                                    <DataGridTextColumn Header="ID" Binding="{Binding Path=Orders_ID}" Width="auto">
                                         <DataGridTextColumn.ElementStyle>
                                             <Style TargetType="{x:Type TextBlock}">
+                                                <Setter Property="Background" Value="{Binding Path='Orders_Status', Converter={converters:StringToBrushConverter}}" />
                                                 <Setter Property="FontFamily" Value="Fonts/#Inter Regular"/>
                                                 <Setter Property="TextAlignment" Value="Center"/>
                                                 <Setter Property="FontSize" Value="20"/>
                                             </Style>
                                         </DataGridTextColumn.ElementStyle>
                                     </DataGridTextColumn>
-                                    <DataGridTextColumn Header="Количество заказов" Binding="{Binding Path=CountOfOrders}" Width="auto">
+                                    <DataGridTextColumn Header="Статус" Binding="{Binding Path=Orders_Status}" Width="auto">
                                         <DataGridTextColumn.ElementStyle>
                                             <Style TargetType="{x:Type TextBlock}">
+                                                <Setter Property="Background" Value="{Binding Path='Orders_Status', Converter={converters:StringToBrushConverter}}" />
                                                 <Setter Property="FontFamily" Value="Fonts/#Inter Regular"/>
                                                 <Setter Property="TextAlignment" Value="Center"/>
+                                                <Setter Property="FontSize" Value="20"/>
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </DataGridTextColumn>
+                                    <DataGridTextColumn Header="Заказан" Binding="{Binding Path=Orders_Time}" Width="55">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="{x:Type TextBlock}">
+                                                <Setter Property="Background" Value="{Binding Path='Orders_Status', Converter={converters:StringToBrushConverter}}" />
+                                                <Setter Property="FontFamily" Value="Fonts/#Inter Regular"/>
+                                                <Setter Property="TextAlignment" Value="Center"/>
+                                                <Setter Property="FontSize" Value="20"/>
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </DataGridTextColumn>
+                                    <DataGridTextColumn Header="Подан" Binding="{Binding Path=Orders_Serving_time}" Width="55" SortDirection="Ascending">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="{x:Type TextBlock}">
+                                                <Setter Property="Background" Value="{Binding Path='Orders_Status', Converter={converters:StringToBrushConverter}}" />
+                                                <Setter Property="FontFamily" Value="Fonts/#Inter Regular"/>
+                                                <Setter Property="TextAlignment" Value="Center"/>
+                                                <Setter Property="FontSize" Value="20"/>
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </DataGridTextColumn>
+                                    <DataGridTextColumn Header="Заказ" Binding="{Binding Path=Orders_Dish_List}" Width="auto">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="{x:Type TextBlock}">
+                                                <Setter Property="Background" Value="{Binding Path='Orders_Status', Converter={converters:StringToBrushConverter}}" />
+                                                <Setter Property="FontFamily" Value="Fonts/#Inter Regular"/>
                                                 <Setter Property="FontSize" Value="20"/>
                                             </Style>
                                         </DataGridTextColumn.ElementStyle>
@@ -514,135 +372,290 @@ RowBackground="LightGray" AlternatingRowBackground="White" Visibility="Visible" 
                         </Grid>
                     </Border>
                 </Grid>
-                <Border  Style="{StaticResource whiteBorder}" Grid.ColumnSpan="3" Grid.RowSpan="2" Grid.Row="2" Margin="0 10 10 0" Name="analytics5Border">
-                    <Grid>
-                        <TextBlock Text="Заполняемость по часам" Style="{StaticResource menuText}" FontSize="16" Margin="0 -10 0 0"/>
-                        <StackPanel HorizontalAlignment="Right">
-                            <DatePicker Name="datePicker"  SelectedDateFormat="Short" Width="200" Margin="0 -10 0 0"  HorizontalAlignment="Right" SelectedDateChanged="datePicker_SelectedDateChanged" />
-                        </StackPanel>
+                <!--Menu-->
+                <Grid Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3" Margin="20,0,0,0" Grid.RowSpan="2" Name="menuGrid" Visibility="Collapsed">
+                    <ListView Name="menuListView" SelectionChanged="menuListView_SelectionChanged" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Center" Foreground="Black" Background="#FFECECF0" BorderBrush="{x:Null}" >
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Border Grid.Row="1" Style="{StaticResource whiteBorder}"  CornerRadius="20"  Padding="0 0 0 0" Margin="0 0 0 0" Width="300" Height="270">
+                                    <Grid >
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="auto"/>
+                                        </Grid.RowDefinitions>
+                                        <Image Source="{Binding Image}" Grid.Row="0" Stretch="UniformToFill" HorizontalAlignment="Center" Margin="5" Width="200" Height="200" VerticalAlignment="Center"/>
+                                        <TextBlock Name="fo" Text="{Binding Name}" HorizontalAlignment="Center"  Grid.Row="1" Style="{StaticResource menuText}" FontSize="18"/>
+                                        <TextBlock Text="{Binding Price, StringFormat={}{0} ₽}" Grid.Row="2" Style="{StaticResource menuText}" Margin="10 10" HorizontalAlignment="Right" FontSize="16"/>
+                                        <TextBlock Text="{Binding Type, StringFormat={}Вид: {0}}" Grid.Row="2" Style="{StaticResource menuText}" Margin="10 10" HorizontalAlignment="Left" FontSize="16"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+                <!--Analytics-->
+                <Grid Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3" Margin="20,0,0,0" Grid.RowSpan="2" Name="analytcsGrid" Visibility="Visible">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="332*"/>
+                        <ColumnDefinition Width="357*"/>
+                        <ColumnDefinition Width="349*"/>
+                        <ColumnDefinition Width="332*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="32*"/>
+                        <RowDefinition Height="119*"/>
+                    </Grid.RowDefinitions>
+                    <Border Grid.Column="0" Style="{StaticResource whiteBorder}" Name="analytics1Border" >
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50*"/>
+                                <ColumnDefinition Width="50*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="31*"/>
+                                <RowDefinition Height="68*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Всего посещений" VerticalAlignment="Center" Style="{StaticResource menuText}" FontSize="20" HorizontalAlignment="Center" Grid.Column="0" Grid.ColumnSpan="2"/>
+                            <!--<TextBlock Text="{Binding CustomersCount}" Grid.Row="1" FontSize="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=Height, Converter={converters:WindowSizeToFontSizeConverter}, ConverterParameter=1}" Grid.Column="0" Style="{StaticResource menuText}" VerticalAlignment="Center" HorizontalAlignment="Right" />-->
+                            <TextBlock Name="CustomersCount" Text="" Grid.Row="1" FontSize="40" Grid.Column="0" Style="{StaticResource menuText}" VerticalAlignment="Center" HorizontalAlignment="Right" Height="48" Margin="10,0,0,0"/>
+                            <TextBlock Name="CustomersDate" Text="" Grid.Row="1" Grid.Column="1" Style="{StaticResource menuText}" TextAlignment="Center" HorizontalAlignment="Left" FontSize="14" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="#FF7F7F7F" LineHeight="16"/>
+                        </Grid>
 
-                        <lvc:CartesianChart  LegendLocation="None" Background="White" Margin="0 30 0 0">
+                    </Border>
+                    <Border Grid.Column="1" Style="{StaticResource whiteBorder}" Margin="10,0,10,0" Name="analytics2Border" >
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50*"/>
+                                <ColumnDefinition Width="50*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="31*"/>
+                                <RowDefinition Height="68*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Прирост выручки" VerticalAlignment="Center" Style="{StaticResource menuText}" FontSize="20" HorizontalAlignment="Center" Grid.Column="0" Grid.ColumnSpan="2"/>
+                            <!--<TextBlock Text="{Binding CustomersCount}" Grid.Row="1" FontSize="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=Height, Converter={converters:WindowSizeToFontSizeConverter}, ConverterParameter=1}" Grid.Column="0" Style="{StaticResource menuText}" VerticalAlignment="Center" HorizontalAlignment="Right" />-->
+                            <Border Name="revenueBorder" Style="{StaticResource whiteBorder}" Background="#FFEA7272" Padding="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="117" >
+                                <TextBlock  Name="revenueMoney" Text="124%"  FontSize="40" Grid.Column="0" Style="{StaticResource menuText}" Height="48" HorizontalAlignment="Center" />
+                            </Border>
+                            <TextBlock Name="revenueText"  Grid.Row="1" Grid.Column="1" Style="{StaticResource menuText}" TextAlignment="Center" HorizontalAlignment="Left" FontSize="15" VerticalAlignment="Center" Margin="0,0,0,0" Foreground="#FF7F7F7F" LineHeight="16"/>
+                        </Grid>
 
-                            <lvc:CartesianChart.Series >
-                                <lvc:ColumnSeries Values="{Binding Occupancy}" Fill="#A0E182" Title="За этот час: " Stroke="#A0E182" Name="occupancyColumnSeries" />
-                            </lvc:CartesianChart.Series>
+                    </Border>
+                    <Border Grid.Column="2" Style="{StaticResource whiteBorder}" Margin="0,0,10,0" Name="analytics3Border" >
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50*"/>
+                                <ColumnDefinition Width="50*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="31*"/>
+                                <RowDefinition Height="68*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Прирост посетителей" VerticalAlignment="Center" Style="{StaticResource menuText}" FontSize="20" HorizontalAlignment="Center" Grid.Column="0" Grid.ColumnSpan="2"/>
+                            <!--<TextBlock Text="{Binding CustomersCount}" Grid.Row="1" FontSize="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=Height, Converter={converters:WindowSizeToFontSizeConverter}, ConverterParameter=1}" Grid.Column="0" Style="{StaticResource menuText}" VerticalAlignment="Center" HorizontalAlignment="Right" />-->
+                            <Border Name="customersBorder" Style="{StaticResource whiteBorder}" Background="#FFE8A45F" Padding="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="117" >
+                                <TextBlock Name="customersPercent" Text="124%"  FontSize="40" Grid.Column="0" Style="{StaticResource menuText}" Height="48" HorizontalAlignment="Center" />
+                            </Border>
+                            <TextBlock Name="customersText" Grid.Row="1" Grid.Column="1" Style="{StaticResource menuText}" TextAlignment="Center" HorizontalAlignment="Left" FontSize="15" VerticalAlignment="Center" Margin="0,0,0,0" Foreground="#FF7F7F7F" LineHeight="16"/>
+                        </Grid>
 
-                            <lvc:CartesianChart.AxisX>
-                                <lvc:Axis Foreground="Black" Labels="{Binding Occupancy_Labels}" ShowLabels="True" Title="Час" Name="occupancyLabels" >
-                                    <lvc:Axis.Separator>
-                                        <lvc:Separator StrokeThickness="0" Step="1"/>
-                                    </lvc:Axis.Separator>
-                                </lvc:Axis>
-                            </lvc:CartesianChart.AxisX>
+                    </Border>
+                    <Border Grid.Column="3" Style="{StaticResource whiteBorder}" Name="analytics4Border" >
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="31*"/>
+                                <RowDefinition Height="68*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Среднее время ожидания гостя" VerticalAlignment="Center" Style="{StaticResource menuText}" FontSize="17" HorizontalAlignment="Center" Grid.Column="0" Grid.ColumnSpan="2"/>
+                            <TextBlock Name="timeWaiting" Text="39 минут" Grid.Row="1" FontSize="40" Grid.Column="0" Style="{StaticResource menuText}" VerticalAlignment="Center" HorizontalAlignment="Center" Height="48" Margin="10,0,0,0"/>
+                        </Grid>
 
-                            <lvc:CartesianChart.AxisY>
-                                <lvc:Axis MinValue="0" MaxValue="{Binding Occupancy_Max}" Foreground="Black" ShowLabels="True" Title="Посетителей чел." Name="occupancyMax">
-                                    <lvc:Axis.Separator>
-                                        <lvc:Separator StrokeThickness="0"/>
-                                    </lvc:Axis.Separator>
-                                </lvc:Axis>
-                            </lvc:CartesianChart.AxisY>
-
-
-                        </lvc:CartesianChart>
+                    </Border>
+                    <Grid Grid.Column="3" Grid.Row="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Border Style="{StaticResource whiteBorder}" Grid.Row="1" Margin="0 10 0 0" Name="analytics6Border" >
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="23*"/>
+                                    <RowDefinition Height="3*"/>
+                                    <RowDefinition Height="376*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="Топ официантов" Style="{StaticResource menuText}" Grid.Row="0" Margin="0,1,10,1"/>
+                                <DataGrid Name="GarconsGrid" AutoGenerateColumns="False" HorizontalGridLinesBrush="DarkGray"
+RowBackground="LightGray" AlternatingRowBackground="White" Visibility="Visible" Grid.Row="2" CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True" >
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Официант" Binding="{Binding Path=GarconName}" Width="auto">
+                                            <DataGridTextColumn.ElementStyle>
+                                                <Style TargetType="{x:Type TextBlock}">
+                                                    <Setter Property="FontFamily" Value="Fonts/#Inter Regular"/>
+                                                    <Setter Property="TextAlignment" Value="Center"/>
+                                                    <Setter Property="FontSize" Value="20"/>
+                                                </Style>
+                                            </DataGridTextColumn.ElementStyle>
+                                        </DataGridTextColumn>
+                                        <DataGridTextColumn Header="Количество заказов" Binding="{Binding Path=CountOfOrders}" Width="auto">
+                                            <DataGridTextColumn.ElementStyle>
+                                                <Style TargetType="{x:Type TextBlock}">
+                                                    <Setter Property="FontFamily" Value="Fonts/#Inter Regular"/>
+                                                    <Setter Property="TextAlignment" Value="Center"/>
+                                                    <Setter Property="FontSize" Value="20"/>
+                                                </Style>
+                                            </DataGridTextColumn.ElementStyle>
+                                        </DataGridTextColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </Border>
                     </Grid>
+                    <Border  Style="{StaticResource whiteBorder}" Grid.ColumnSpan="3" Grid.RowSpan="2" Grid.Row="2" Margin="0 10 10 0" Name="analytics5Border">
+                        <Grid>
+                            <TextBlock Text="Заполняемость" Style="{StaticResource menuText}" FontSize="18"  HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                            
+                            <Button Style="{StaticResource menuButton}" Name="analyticsOccupancyHourButton"   Height="30" Width="100" Cursor="Hand"  HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="165,-3,0,0" Click="analyticsOccupancyHourButton_Click">
+                                <TextBlock Text="По часам" Style="{StaticResource menuText}" FontSize="16"  HorizontalAlignment="Center" Margin="0 0 0 0"/>
+                            </Button>
+                            <Button Style="{StaticResource menuButton}"  Name="analyticsOccupancyDayButton"  Height="30" Width="100" Cursor="Hand" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="280,-3,0,0" Click="analyticsOccupancyDayButton_Click">
+                                <TextBlock Text="По дням" Style="{StaticResource menuText}" FontSize="16"  HorizontalAlignment="Center" Margin="0 0 0 0"/>
+                            </Button>
+                            
+                            <StackPanel HorizontalAlignment="Right">
+                                <DatePicker Name="datePicker"  SelectedDateFormat="Short" Width="200" Margin="0 -10 0 0"  HorizontalAlignment="Right" SelectedDateChanged="datePicker_SelectedDateChanged" />
+                            </StackPanel>
 
-                </Border>
+                            <lvc:CartesianChart  LegendLocation="None" Background="White" Margin="0,35,0,0">
 
-            </Grid>
-            <!--Reserv-->
-            <Grid Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3" Margin="20,0,0,0" Grid.RowSpan="2" Name="reservationsGrid" Visibility="Visible">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="274*"/>
-                    <ColumnDefinition Width="274*"/>
-                    <ColumnDefinition Width="230*"/>
-                    <ColumnDefinition Width="413*"/>
-                    <ColumnDefinition Width="179*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="200*"/>
-                    <RowDefinition Height="200*"/>
-                    <RowDefinition Height="200*"/>
-                    <RowDefinition Height="200*"/>
-                </Grid.RowDefinitions>
-                <uc:table1 x:Name="tableNumber1" CustomWidth="140" BigBorderWidth="130" SmallBorderWidth="116" Grid.Column="0" Number="1" Grid.Row="0" Status="Свободен" Margin="62,0,62,102" Grid.RowSpan="2"/>
-                <uc:table1 x:Name="tableNumber2" CustomWidth="140" BigBorderWidth="130" SmallBorderWidth="116" Number="2" Status="Свободен" Grid.Column="0" Margin="62,151,62,102" Grid.RowSpan="3"/>
-                <uc:table1 x:Name="tableNumber3" CustomWidth="140" BigBorderWidth="130" SmallBorderWidth="116" Number="3" Status="Свободен" Grid.Row="1" Grid.Column="0" Margin="62,151,62,102" Grid.RowSpan="3"/>
-                <uc:table1 x:Name="tableNumber4" CustomWidth="140" BigBorderWidth="130" SmallBorderWidth="116" Number="4" Status="Свободен" Grid.Row="2" Grid.Column="0" Margin="62,151,62,-49" Grid.RowSpan="2"/>
-                <uc:table1 x:Name="tableNumber5" CustomWidth="400" BigBorderWidth="370" SmallBorderWidth="355" Number="5" Status="Свободен" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="10,151,39,-49" Grid.RowSpan="2"/>
-                <uc:table1 x:Name="tableNumber6" CustomWidth="400" BigBorderWidth="370" SmallBorderWidth="355" Number="6" Status="Свободен" Grid.Row="2" Grid.Column="3" Margin="10,151,0,-49" Grid.RowSpan="2"/>
-                
-                <uc:table1 x:Name="tableNumber7" CustomWidth="83" BigBorderWidth="60" SmallBorderWidth="45" Number="7" Status="Свободен" Grid.Row="2" Grid.Column="4"/>
-                <uc:table1 x:Name="tableNumber8" CustomWidth="83" BigBorderWidth="60" SmallBorderWidth="45" Number="8" Status="Свободен" Grid.Column="4" Grid.Row="1"/>
-                <uc:table1 x:Name="tableNumber9" CustomWidth="83" BigBorderWidth="60" SmallBorderWidth="45" Number="9" Status="Свободен" Grid.Row="0" Grid.Column="4"/>
-                <uc:table1 x:Name="tableNumber10" CustomWidth="83" BigBorderWidth="60" SmallBorderWidth="45" Number="10" Status="Свободен" Grid.Row="1" Grid.Column="3" />
-                <uc:table1 x:Name="tableNumber11" CustomWidth="83" BigBorderWidth="60" SmallBorderWidth="45" Number="11" Status="Свободен" Grid.Column="3" Grid.Row="2"/>
-                <uc:table1 x:Name="tableNumber12" CustomWidth="83" BigBorderWidth="60" SmallBorderWidth="45" Number="12" Status="Свободен" Grid.Row="0" Grid.Column="3"/>
-                <uc:table1 x:Name="tableNumber13" CustomWidth="140" BigBorderWidth="130" SmallBorderWidth="116" Grid.Column="2" Number="13" Grid.Row="0" Status="Свободен" RenderTransformOrigin="0.5,0.5">
-                    <uc:table1.RenderTransform>
-                        <TransformGroup>
-                            <ScaleTransform/>
-                            <SkewTransform/>
-                            <RotateTransform Angle="90"/>
-                            <TranslateTransform/>
-                        </TransformGroup>
-                    </uc:table1.RenderTransform>
-                </uc:table1>
-                <uc:table1 x:Name="tableNumber14" CustomWidth="140" BigBorderWidth="130" SmallBorderWidth="116" Grid.Column="2" Number="14" Grid.Row="1" Status="Свободен" RenderTransformOrigin="0.5,0.5" Margin="0,125,0,26" Grid.RowSpan="2">
-                    <uc:table1.RenderTransform>
-                        <TransformGroup>
-                            <ScaleTransform/>
-                            <SkewTransform/>
-                            <RotateTransform Angle="90"/>
-                            <TranslateTransform/>
-                        </TransformGroup>
-                    </uc:table1.RenderTransform>
-                </uc:table1>
-                <uc:table1 x:Name="tableNumber15" CustomWidth="140" BigBorderWidth="130" SmallBorderWidth="116" Grid.Column="1" Number="15" Grid.Row="1" Status="Свободен" RenderTransformOrigin="0.5,0.5" Margin="0,125,0,26" Grid.RowSpan="2">
-                    <uc:table1.RenderTransform>
-                        <TransformGroup>
-                            <ScaleTransform/>
-                            <SkewTransform/>
-                            <RotateTransform Angle="90"/>
-                            <TranslateTransform/>
-                        </TransformGroup>
-                    </uc:table1.RenderTransform>
-                </uc:table1>
-                <uc:table1 x:Name="tableNumber16" CustomWidth="140" BigBorderWidth="130" SmallBorderWidth="116" Grid.Column="1" Number="16" Grid.Row="0" Status="Свободен" RenderTransformOrigin="0.5,0.5">
-                    <uc:table1.RenderTransform>
-                        <TransformGroup>
-                            <ScaleTransform/>
-                            <SkewTransform/>
-                            <RotateTransform Angle="90"/>
-                            <TranslateTransform/>
-                        </TransformGroup>
-                    </uc:table1.RenderTransform>
-                </uc:table1>
-            </Grid>
-            <!--Info-->
-            <Grid Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3" Margin="20,0,0,0" Grid.RowSpan="2" Name="infoGrid" Visibility="Collapsed" >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="216*"/>
-                    <ColumnDefinition Width="216*"/>
-                    <ColumnDefinition Width="216*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="222*"/>
-                    <RowDefinition Height="80*"/>
-                    <RowDefinition Height="151*"/>
-                    <RowDefinition Height="151*"/>
-                </Grid.RowDefinitions>
-                <Border Grid.Row="0" Style="{StaticResource whiteBorder}" Grid.ColumnSpan="3" Visibility="Collapsed">
-                    <StackPanel>
-                        <TextBlock Text="Версия" Style="{StaticResource titleText}" Foreground="Black" HorizontalAlignment="Center"/>
-                        <TextBlock Text="CMRS Version 0.109" Style="{StaticResource titleText}" Foreground="Black"  HorizontalAlignment="Center" FontFamily="Fonts/#Inter Medium" Margin="0 5 0 0"/>
-                        <TextBlock Text="ID компьютера" Style="{StaticResource titleText}" Foreground="Black" HorizontalAlignment="Center"/>
-                        <TextBlock Name="infoHardwareID" Text="" Style="{StaticResource titleText}" Foreground="Black"  HorizontalAlignment="Center" FontFamily="Fonts/#Inter Medium" Margin="0 5 0 0"/>
-                        <TextBlock Text="Подключение к базе данных" Style="{StaticResource titleText}" Foreground="Black" HorizontalAlignment="Center"/>
-                        <TextBlock Name="infoDBStatus" Text="Никто не знает" Style="{StaticResource titleText}" Foreground="Black"  HorizontalAlignment="Center" FontFamily="Fonts/#Inter Medium" Margin="0 5 0 0"/>
-                    </StackPanel>
-                </Border>
+                                <lvc:CartesianChart.Series >
+                                    <lvc:ColumnSeries   Values="{Binding Occupancy}" Fill="#A0E182" Stroke="#A0E182" Name="occupancyColumnSeries" />
+                                </lvc:CartesianChart.Series>
+
+                                <lvc:CartesianChart.AxisX>
+                                    <lvc:Axis Foreground="Black" Labels="{Binding Occupancy_Labels}" ShowLabels="True" Name="occupancyLabels" >
+                                        <lvc:Axis.Separator>
+                                            <lvc:Separator StrokeThickness="0" Step="1"/>
+                                        </lvc:Axis.Separator>
+                                    </lvc:Axis>
+                                </lvc:CartesianChart.AxisX>
+
+                                <lvc:CartesianChart.AxisY>
+                                    <lvc:Axis MinValue="0" MaxValue="{Binding Occupancy_Max}" Foreground="Black" ShowLabels="True" Title="Посетителей чел." Name="occupancyMax">
+                                        <lvc:Axis.Separator>
+                                            <lvc:Separator StrokeThickness="0"/>
+                                        </lvc:Axis.Separator>
+                                    </lvc:Axis>
+                                </lvc:CartesianChart.AxisY>
+
+
+                            </lvc:CartesianChart>
+                        </Grid>
+
+                    </Border>
+
+                </Grid>
+                <!--Reserv-->
+                <Grid Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3" Margin="20,0,0,0" Grid.RowSpan="2" Name="reservationsGrid" Visibility="Collapsed">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="274*"/>
+                        <ColumnDefinition Width="274*"/>
+                        <ColumnDefinition Width="230*"/>
+                        <ColumnDefinition Width="413*"/>
+                        <ColumnDefinition Width="179*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="200*"/>
+                        <RowDefinition Height="200*"/>
+                        <RowDefinition Height="200*"/>
+                        <RowDefinition Height="200*"/>
+                    </Grid.RowDefinitions>
+                    <uc:table1 x:Name="tableNumber1" CustomWidth="140" BigBorderWidth="130" SmallBorderWidth="116" Grid.Column="0" Number="1" Grid.Row="0" Status="Свободен" Margin="62,0,62,102" Grid.RowSpan="2"/>
+                    <uc:table1 x:Name="tableNumber2" CustomWidth="140" BigBorderWidth="130" SmallBorderWidth="116" Number="2" Status="Свободен" Grid.Column="0" Margin="62,151,62,102" Grid.RowSpan="3"/>
+                    <uc:table1 x:Name="tableNumber3" CustomWidth="140" BigBorderWidth="130" SmallBorderWidth="116" Number="3" Status="Свободен" Grid.Row="1" Grid.Column="0" Margin="62,151,62,102" Grid.RowSpan="3"/>
+                    <uc:table1 x:Name="tableNumber4" CustomWidth="140" BigBorderWidth="130" SmallBorderWidth="116" Number="4" Status="Свободен" Grid.Row="2" Grid.Column="0" Margin="62,151,62,-49" Grid.RowSpan="2"/>
+                    <uc:table1 x:Name="tableNumber5" CustomWidth="400" BigBorderWidth="370" SmallBorderWidth="355" Number="5" Status="Свободен" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="10,151,39,-49" Grid.RowSpan="2"/>
+                    <uc:table1 x:Name="tableNumber6" CustomWidth="400" BigBorderWidth="370" SmallBorderWidth="355" Number="6" Status="Свободен" Grid.Row="2" Grid.Column="3" Margin="10,151,0,-49" Grid.RowSpan="2"/>
+
+                    <uc:table1 x:Name="tableNumber7" CustomWidth="83" BigBorderWidth="60" SmallBorderWidth="45" Number="7" Status="Свободен" Grid.Row="2" Grid.Column="4"/>
+                    <uc:table1 x:Name="tableNumber8" CustomWidth="83" BigBorderWidth="60" SmallBorderWidth="45" Number="8" Status="Свободен" Grid.Column="4" Grid.Row="1"/>
+                    <uc:table1 x:Name="tableNumber9" CustomWidth="83" BigBorderWidth="60" SmallBorderWidth="45" Number="9" Status="Свободен" Grid.Row="0" Grid.Column="4"/>
+                    <uc:table1 x:Name="tableNumber10" CustomWidth="83" BigBorderWidth="60" SmallBorderWidth="45" Number="10" Status="Свободен" Grid.Row="1" Grid.Column="3" />
+                    <uc:table1 x:Name="tableNumber11" CustomWidth="83" BigBorderWidth="60" SmallBorderWidth="45" Number="11" Status="Свободен" Grid.Column="3" Grid.Row="2"/>
+                    <uc:table1 x:Name="tableNumber12" CustomWidth="83" BigBorderWidth="60" SmallBorderWidth="45" Number="12" Status="Свободен" Grid.Row="0" Grid.Column="3"/>
+                    <uc:table1 x:Name="tableNumber13" CustomWidth="140" BigBorderWidth="130" SmallBorderWidth="116" Grid.Column="2" Number="13" Grid.Row="0" Status="Свободен" RenderTransformOrigin="0.5,0.5">
+                        <uc:table1.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="90"/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </uc:table1.RenderTransform>
+                    </uc:table1>
+                    <uc:table1 x:Name="tableNumber14" CustomWidth="140" BigBorderWidth="130" SmallBorderWidth="116" Grid.Column="2" Number="14" Grid.Row="1" Status="Свободен" RenderTransformOrigin="0.5,0.5" Margin="0,125,0,26" Grid.RowSpan="2">
+                        <uc:table1.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="90"/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </uc:table1.RenderTransform>
+                    </uc:table1>
+                    <uc:table1 x:Name="tableNumber15" CustomWidth="140" BigBorderWidth="130" SmallBorderWidth="116" Grid.Column="1" Number="15" Grid.Row="1" Status="Свободен" RenderTransformOrigin="0.5,0.5" Margin="0,125,0,26" Grid.RowSpan="2">
+                        <uc:table1.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="90"/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </uc:table1.RenderTransform>
+                    </uc:table1>
+                    <uc:table1 x:Name="tableNumber16" CustomWidth="140" BigBorderWidth="130" SmallBorderWidth="116" Grid.Column="1" Number="16" Grid.Row="0" Status="Свободен" RenderTransformOrigin="0.5,0.5">
+                        <uc:table1.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="90"/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </uc:table1.RenderTransform>
+                    </uc:table1>
+                </Grid>
+                <!--Info-->
+                <Grid Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3" Margin="20,0,0,0" Grid.RowSpan="2" Name="infoGrid" Visibility="Collapsed" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="216*"/>
+                        <ColumnDefinition Width="216*"/>
+                        <ColumnDefinition Width="216*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="222*"/>
+                        <RowDefinition Height="80*"/>
+                        <RowDefinition Height="151*"/>
+                        <RowDefinition Height="151*"/>
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="0" Style="{StaticResource whiteBorder}" Grid.ColumnSpan="3">
+                        <StackPanel>
+                            <TextBlock Text="Версия" Style="{StaticResource titleText}" Foreground="Black" HorizontalAlignment="Center"/>
+                            <TextBlock Text="CMRS Version 0.109" Style="{StaticResource titleText}" Foreground="Black"  HorizontalAlignment="Center" FontFamily="Fonts/#Inter Medium" Margin="0 5 0 0"/>
+                            <TextBlock Text="ID компьютера" Style="{StaticResource titleText}" Foreground="Black" HorizontalAlignment="Center"/>
+                            <TextBlock Name="infoHardwareID" Text="" Style="{StaticResource titleText}" Foreground="Black"  HorizontalAlignment="Center" FontFamily="Fonts/#Inter Medium" Margin="0 5 0 0"/>
+                            <TextBlock Text="Подключение к базе данных" Style="{StaticResource titleText}" Foreground="Black" HorizontalAlignment="Center"/>
+                            <TextBlock Name="infoDBStatus" Text="Никто не знает" Style="{StaticResource titleText}" Foreground="Black"  HorizontalAlignment="Center" FontFamily="Fonts/#Inter Medium" Margin="0 5 0 0"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
             </Grid>
         </Grid>
+       
     </Border>
+
 </Window>

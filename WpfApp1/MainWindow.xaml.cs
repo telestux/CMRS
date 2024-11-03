@@ -87,32 +87,30 @@ namespace WpfApp1
         public int MonthOrdersMax { get; set; }
         public string MonthSells { get; set; }
 
-        public int ActiveOrders { get; set; }
-        public int TodayOrders { get; set; }
-        public int CancelledOrders { get; set; }
-
         public string PicturePath { get; set; }
         public string Dish { get; set; }
-        public string OrdersCount { get; set;}
+        public string OrdersCount { get; set; }
         public string MonthOrdersCount { get; set; }
 
         public int Occupancy_Max { get; set; }
-
         DateTime now = DateTime.Now;
 
         private DispatcherTimer timer;
         public MainWindow()
         {
+            InitializeComponent();
+            //showMainPage();
+            showAnalyticsPage();
         }
         //Main
-        private void getOrders ()
+        private void getOrders()
         {
             mainButton.Tag = "Selected";
             DataContext = this;
             try
             {
                 connection.Open();
-                SqlCommand cmd = new SqlCommand($"SELECT SUM(Orders_Bill) FROM Orders WHERE MONTH(CONVERT(DATE, Orders_Date, 104)) = MONTH(GETDATE()) AND YEAR(CONVERT(DATE, Orders_Date, 104)) = YEAR(GETDATE())",connection);
+                SqlCommand cmd = new SqlCommand($"SELECT SUM(Orders_Bill) FROM Orders WHERE MONTH(CONVERT(DATE, Orders_Date, 104)) = MONTH(GETDATE()) AND YEAR(CONVERT(DATE, Orders_Date, 104)) = YEAR(GETDATE())", connection);
                 if (Convert.IsDBNull(cmd.ExecuteScalar()))
                 {
                     MonthSells = "0 руб.";
@@ -130,7 +128,7 @@ namespace WpfApp1
                     Labels.Add(i.ToString());
                     if (Convert.IsDBNull(cmd.ExecuteScalar()))
                     {
-                        ChartValues.Add(1); 
+                        ChartValues.Add(1);
                     }
                     else
                     {
@@ -140,31 +138,31 @@ namespace WpfApp1
                 cmd = new SqlCommand($"SELECT COUNT(*) FROM Orders WHERE CONVERT(DATE, Orders_Date, 104) = CONVERT(DATE, GETDATE(), 104) AND Orders_Status = 'Активен'", connection);
                 if (Convert.IsDBNull(cmd.ExecuteScalar()))
                 {
-                    ActiveOrders = 0;
+                    ActiveOrders.Text = "0";
                 }
                 else
                 {
-                    ActiveOrders = Convert.ToInt32(cmd.ExecuteScalar());
+                    ActiveOrders.Text = cmd.ExecuteScalar().ToString();
                 }
-                    
+
                 cmd = new SqlCommand($"SELECT COUNT(*) FROM Orders WHERE CONVERT(DATE, Orders_Date, 104) = CONVERT(DATE, GETDATE(), 104)", connection);
                 if (Convert.IsDBNull(cmd.ExecuteScalar()))
                 {
-                    TodayOrders = 0;
+                    TodayOrders.Text = "0";
                 }
                 else
                 {
-                    TodayOrders = Convert.ToInt32(cmd.ExecuteScalar());
+                    TodayOrders.Text = cmd.ExecuteScalar().ToString();
                 }
                 cmd = new SqlCommand($"SELECT COUNT(*) FROM Orders WHERE CONVERT(DATE, Orders_Date, 104) = CONVERT(DATE, GETDATE(), 104) AND Orders_Status = 'Отменён'", connection);
                 if (Convert.IsDBNull(cmd.ExecuteScalar()))
                 {
-                    CancelledOrders = 0;
+                    CancelledOrders.Text = "0";
                     Max = 0;
                 }
                 else
                 {
-                    CancelledOrders = Convert.ToInt32(cmd.ExecuteScalar());
+                    CancelledOrders.Text = cmd.ExecuteScalar().ToString();
                     Max = Convert.ToInt32(ChartValues.Max() + (ChartValues.Max() * 0.3));
                 }
             }
@@ -177,10 +175,10 @@ namespace WpfApp1
                 connection.Close();
             }
         }
-        
-        private string getMonths (int Month)
+
+        private string getMonths(int Month)
         {
-            switch (Month) 
+            switch (Month)
             {
                 case 1:
                     return "Январь";
@@ -292,7 +290,7 @@ namespace WpfApp1
             }
         }
 
-        private void getTopDish ()
+        private void getTopDish()
         {
             DataContext = this;
             try
@@ -364,13 +362,14 @@ namespace WpfApp1
                 if (Convert.IsDBNull(cmd.ExecuteScalar()))
                 {
                     MonthOrdersCount = "0 заказов";
-                } 
+                }
                 else
                 {
                     MonthOrdersCount = cmd.ExecuteScalar().ToString() + " заказов";
                 }
-                   
+
                 MonthOrdersChartValues = new ChartValues<double> { };
+                MonthOrdersChartValues.Add(1);
                 Labels3 = new List<string> { };
                 int daysCout = DateTime.DaysInMonth(now.Year, now.Month);
                 for (int i = 1; i < now.Day + 1; i++)
@@ -384,7 +383,7 @@ namespace WpfApp1
                     else
                     {
                         MonthOrdersChartValues.Add(Convert.ToDouble(cmd.ExecuteScalar()));
-                    }  
+                    }
                 }
                 MonthOrdersMax = Convert.ToInt32(MonthOrdersChartValues.Max() + (MonthOrdersChartValues.Max() * 0.3));
             }
@@ -414,7 +413,7 @@ namespace WpfApp1
                         Orders_ID = rdr["Orders_ID"].ToString(),
                         Orders_Bill = Convert.ToInt32(rdr["Orders_Bill"]),
                         Orders_Time = rdr["Orders_Time"].ToString().Substring(0, 5),
-                        Orders_Serving_time = rdr["Orders_serving_time"].ToString().Substring(0,5),
+                        Orders_Serving_time = rdr["Orders_serving_time"].ToString().Substring(0, 5),
                         Orders_Dish_List = rdr["Orders_Dish_List"].ToString(),
                         Orders_Status = rdr["Orders_Status"].ToString(),
                     };
@@ -446,7 +445,7 @@ namespace WpfApp1
                 currentDirectory = Directory.GetParent(currentDirectory)?.FullName;
             }
 
-            return null; 
+            return null;
         }
         //Menu
         public void getMenu(string parameter)
@@ -465,7 +464,7 @@ namespace WpfApp1
                         ID = rdr["Menu_ID"].ToString(),
                         Name = rdr["Menu_Name"].ToString(),
                         Price = Convert.ToInt32(rdr["Menu_Price"]),
-                        Image =($"{getProjectFolderPath()}\\Images\\Dishes\\{rdr["Menu_Image"]}"),
+                        Image = ($"{getProjectFolderPath()}\\Images\\Dishes\\{rdr["Menu_Image"]}"),
                         Type = rdr["Menu_Type"].ToString(),
                     };
                     if (tableFiller.Image == $"{getProjectFolderPath()}\\Images\\Dishes\\")
@@ -485,7 +484,7 @@ namespace WpfApp1
                 connection.Close();
             }
         }
-       
+
 
         //Analytics
         private void getAnalyticsCount(int days)
@@ -528,7 +527,14 @@ namespace WpfApp1
                         {
                             weekPercentDifference = ((double)(firstNumber - secondNumber) / Math.Max(firstNumber, secondNumber)) * 100;
                             revenueBorder.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0xEA, 0x72, 0x72));
-                            revenueMoney.Text = $"-{Math.Abs((int)weekPercentDifference)}%";
+                            if (Math.Abs((int)weekPercentDifference) < 1)
+                            {
+                                revenueMoney.Text = $"{Math.Abs((int)weekPercentDifference)}%";
+                            }
+                            else
+                            {
+                                revenueMoney.Text = $"-{Math.Abs((int)weekPercentDifference)}%";
+                            }
                         }
                     }
                     else
@@ -558,11 +564,18 @@ namespace WpfApp1
                         {
                             weekPercentDifference = ((double)(first - second) / Math.Max(first, second)) * 100;
                             customersBorder.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0xEA, 0x72, 0x72));
-                            customersPercent.Text = $"-{Math.Abs((int)weekPercentDifference)}%";
+                            if (Math.Abs((int)weekPercentDifference) < 1)
+                            {
+                                customersPercent.Text = $"{Math.Abs((int)weekPercentDifference)}%";
+                            }
+                            else
+                            {
+                                customersPercent.Text = $"-{Math.Abs((int)weekPercentDifference)}%";
+                            }
                         }
                     }
                     else
-                    {                 
+                    {
                     }
                     customersText.Text = $"На сегодня\n{DateTime.Now.ToString("dd.MM.yyyy")}";
                     cmd = new SqlCommand($"SELECT Orders_Garcon, COUNT(*) AS Count FROM Orders WHERE Orders_Date = CAST(GETDATE() AS DATE) GROUP BY Orders_Garcon ORDER BY Count DESC;", connection);
@@ -598,7 +611,7 @@ namespace WpfApp1
                     connection.Close();
                 }
             }
-            else if (days == 7) 
+            else if (days == 7)
             {
                 try
                 {
@@ -634,7 +647,14 @@ namespace WpfApp1
                         {
                             weekPercentDifference = ((double)(firstNumber - secondNumber) / Math.Max(firstNumber, secondNumber)) * 100;
                             revenueBorder.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0xEA, 0x72, 0x72));
-                            revenueMoney.Text = $"-{Math.Abs((int)weekPercentDifference)}%";
+                            if (Math.Abs((int)weekPercentDifference) < 1)
+                            {
+                                revenueMoney.Text = $"{Math.Abs((int)weekPercentDifference)}%";
+                            }
+                            else
+                            {
+                                revenueMoney.Text = $"-{Math.Abs((int)weekPercentDifference)}%";
+                            }
                         }
                     }
                     else
@@ -664,7 +684,14 @@ namespace WpfApp1
                         {
                             weekPercentDifference = ((double)(first - second) / Math.Max(first, second)) * 100;
                             customersBorder.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0xEA, 0x72, 0x72));
-                            customersPercent.Text = $"-{Math.Abs((int)weekPercentDifference)}%";
+                            if (Math.Abs((int)weekPercentDifference) < 1)
+                            {
+                                customersPercent.Text = $"{Math.Abs((int)weekPercentDifference)}%";
+                            }
+                            else
+                            {
+                                customersPercent.Text = $"-{Math.Abs((int)weekPercentDifference)}%";
+                            }
                         }
                     }
                     else
@@ -740,7 +767,14 @@ namespace WpfApp1
                         {
                             weekPercentDifference = ((double)(firstNumber - secondNumber) / Math.Max(firstNumber, secondNumber)) * 100;
                             revenueBorder.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0xEA, 0x72, 0x72));
-                            revenueMoney.Text = $"-{Math.Abs((int)weekPercentDifference)}%";
+                            if (Math.Abs((int)weekPercentDifference) < 1)
+                            {
+                                revenueMoney.Text = $"{Math.Abs((int)weekPercentDifference)}%";
+                            }
+                            else
+                            {
+                                revenueMoney.Text = $"-{Math.Abs((int)weekPercentDifference)}%";
+                            }
                         }
                     }
                     else
@@ -770,7 +804,14 @@ namespace WpfApp1
                         {
                             weekPercentDifference = ((double)(first - second) / Math.Max(first, second)) * 100;
                             customersBorder.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0xEA, 0x72, 0x72));
-                            customersPercent.Text = $"-{Math.Abs((int)weekPercentDifference)}%";
+                            if (Math.Abs((int)weekPercentDifference) < 1)
+                            {
+                                customersPercent.Text = $"{Math.Abs((int)weekPercentDifference)}%";
+                            }
+                            else
+                            {
+                                customersPercent.Text = $"-{Math.Abs((int)weekPercentDifference)}%";
+                            }
                         }
                     }
                     else
@@ -846,7 +887,14 @@ namespace WpfApp1
                         {
                             weekPercentDifference = ((double)(firstNumber - secondNumber) / Math.Max(firstNumber, secondNumber)) * 100;
                             revenueBorder.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0xEA, 0x72, 0x72));
-                            revenueMoney.Text = $"-{Math.Abs((int)weekPercentDifference)}%";
+                            if (Math.Abs((int)weekPercentDifference) < 1)
+                            {
+                                revenueMoney.Text = $"{Math.Abs((int)weekPercentDifference)}%";
+                            }
+                            else
+                            {
+                                revenueMoney.Text = $"-{Math.Abs((int)weekPercentDifference)}%";
+                            }
                         }
                     }
                     else
@@ -876,7 +924,14 @@ namespace WpfApp1
                         {
                             weekPercentDifference = ((double)(first - second) / Math.Max(first, second)) * 100;
                             customersBorder.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0xEA, 0x72, 0x72));
-                            customersPercent.Text = $"-{Math.Abs((int)weekPercentDifference)}%";
+                            if (Math.Abs((int)weekPercentDifference) < 1)
+                            {
+                                customersPercent.Text = $"{Math.Abs((int)weekPercentDifference)}%";
+                            }
+                            else
+                            {
+                                customersPercent.Text = $"-{Math.Abs((int)weekPercentDifference)}%";
+                            }
                         }
                     }
                     else
@@ -920,6 +975,8 @@ namespace WpfApp1
         private void getOccupancy(string formattedDate)
         {
             DataContext = this;
+            analyticsOccupancyHourButton.Tag = "Selected";
+            occupancyColumnSeries.Title = "За этот час:";
             try
             {
                 connection.Open();
@@ -947,6 +1004,112 @@ namespace WpfApp1
 
 
                 }
+                Occupancy_Max = Convert.ToInt32(Occupancy.Max() + (Occupancy.Max() * 0.3));
+                occupancyColumnSeries.Values = Occupancy;
+                occupancyLabels.Labels = Occupancy_Labels;
+                occupancyMax.MaxValue = Occupancy_Max;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+        private void getOccupancyByWeek()
+        {
+            DataContext = this;
+            occupancyColumnSeries.Title = "За этот день:";
+            try
+            {
+                connection.Open();
+                Occupancy = new ChartValues<double> { };
+                Occupancy_Labels = new List<string> { };
+
+                // Russian names for days of the week
+                string[] daysOfWeek = { "воскресенье", "понедельник", "вторник", "среда", "четверг", "пятница", "суббота" };
+
+                // Determine today's day of the week
+                DateTime today = DateTime.Today;
+                int todayIndex = (int)today.DayOfWeek;
+
+                // Create a list of the last 7 days starting from the previous Sunday
+                List<DateTime> lastWeekDates = new List<DateTime>();
+                for (int i = 0; i < 7; i++)
+                {
+                    lastWeekDates.Add(today.AddDays(-todayIndex + i));
+                }
+
+                foreach (DateTime date in lastWeekDates)
+                {
+                    int dayIndex = (int)date.DayOfWeek;
+                    string dayName = daysOfWeek[dayIndex];
+
+                    SqlCommand cmd = new SqlCommand($@"
+                SELECT SUM(Orders_Customers_Count) AS Orders_Count
+                FROM Orders
+                WHERE Orders_Date = CONVERT(DATE, '{date:yyyy-MM-dd}');", connection);
+
+                    Occupancy_Labels.Add(dayName);
+                    if (Convert.IsDBNull(cmd.ExecuteScalar()))
+                    {
+                        Occupancy.Add(0); // Assuming no orders, set to 0
+                    }
+                    else
+                    {
+                        Occupancy.Add(Convert.ToDouble(cmd.ExecuteScalar()));
+                    }
+                }
+
+                Occupancy_Max = Convert.ToInt32(Occupancy.Max() + (Occupancy.Max() * 0.3));
+                occupancyColumnSeries.Values = Occupancy;
+                occupancyLabels.Labels = Occupancy_Labels;
+                occupancyMax.MaxValue = Occupancy_Max;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+        private void getOccupancyForCurrentMonth()
+        {
+            DataContext = this;
+            occupancyColumnSeries.Title = "За этот день:";
+            try
+            {
+                connection.Open();
+                Occupancy = new ChartValues<double> { };
+                Occupancy_Labels = new List<string> { };
+
+                // Get the first and last date of the current month
+                DateTime firstDayOfMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+                DateTime lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
+
+                // Iterate over each day of the current month
+                for (DateTime date = firstDayOfMonth; date <= lastDayOfMonth; date = date.AddDays(1))
+                {
+                    SqlCommand cmd = new SqlCommand($@"
+                SELECT SUM(Orders_Customers_Count) AS Orders_Count
+                FROM Orders
+                WHERE Orders_Date = CONVERT(DATE, '{date:yyyy-MM-dd}');", connection);
+
+                    Occupancy_Labels.Add(date.ToString("dd MMM")); // Add day and month as label
+                    if (Convert.IsDBNull(cmd.ExecuteScalar()))
+                    {
+                        Occupancy.Add(0); // Assuming no orders, set to 0
+                    }
+                    else
+                    {
+                        Occupancy.Add(Convert.ToDouble(cmd.ExecuteScalar()));
+                    }
+                }
+
                 Occupancy_Max = Convert.ToInt32(Occupancy.Max() + (Occupancy.Max() * 0.3));
                 occupancyColumnSeries.Values = Occupancy;
                 occupancyLabels.Labels = Occupancy_Labels;
@@ -991,6 +1154,7 @@ namespace WpfApp1
             hideAll();
             DeselectAllButtons();
             analyticsButton.Tag = "Selected";
+            analyticsOccupancyHourButton.Tag = "Selected";
             showAnalyticsPage();
             analytcsGrid.Visibility = Visibility.Visible;
         }
@@ -1017,14 +1181,14 @@ namespace WpfApp1
             infoButton.Tag = "Selected";
         }
         //Reservations
-        private void getTablesCount ()
+        private void getTablesCount()
         {
             DataContext = this;
             try
             {
                 connection.Open();
                 SqlCommand cmd = new SqlCommand($"SELECT COUNT(*) FROM Reservation WHERE CONVERT(DATE, Reservation_Date, 104) = '{now.Date:yyyy-MM-dd}' AND Reservation_Status = 'Активна' AND Reservation_Start < CONVERT(TIME, GETDATE()) AND Reservation_End > CONVERT(TIME, GETDATE());", connection);
-                if (Convert.IsDBNull(cmd.ExecuteScalar()) || ((int)cmd.ExecuteScalar()==0))
+                if (Convert.IsDBNull(cmd.ExecuteScalar()) || ((int)cmd.ExecuteScalar() == 0))
                 {
                     tablesActiveReservations.Text = "0";
                 }
@@ -1042,7 +1206,7 @@ namespace WpfApp1
                 {
                     tablesBusyTables.Text = cmd.ExecuteScalar().ToString();
                 }
-                tablesFreeTables.Text = $"{16 - (Convert.ToInt32(tablesActiveReservations.Text)) + (Convert.ToInt32(tablesBusyTables.Text))}";
+                tablesFreeTables.Text = $"{16 - (Convert.ToInt32(tablesActiveReservations.Text)) - (Convert.ToInt32(tablesBusyTables.Text))}";
             }
             catch (Exception ex)
             {
@@ -1065,6 +1229,7 @@ namespace WpfApp1
         private void Timer_Tick(object sender, EventArgs e)
         {
             CheckAndUpdateTableStatus();
+            getTablesCount();
         }
         public void CheckAndUpdateTableStatus()
         {
@@ -1086,16 +1251,27 @@ namespace WpfApp1
                 try
                 {
                     connection.Open();
-                    for (int tableNumber = 1; tableNumber <= 3; tableNumber++)
+                    for (int tableNumber = 1; tableNumber <= 16; tableNumber++)
                     {
-                        DateTime currentDateTime = DateTime.Now;
-                        string query = $"SELECT COUNT(*) FROM Reservation " +
-                                       $"WHERE Reservation_Table = {tableNumber} " +
-                                       $"AND Reservation_Date = '{currentDateTime.Date:yyyy-MM-dd}' " +
-                                       $"AND '{currentDateTime:HH:mm:ss}' BETWEEN Reservation_Start AND Reservation_End AND Reservation_Status='Активна'";
-                        SqlCommand command = new SqlCommand(query, connection);
-                        int reservationCount = (int)command.ExecuteScalar();
-                        UpdateTableStatus(tableNumber, reservationCount > 0);
+
+                        string tablesQuery = $"SELECT COUNT(*) FROM Tables WHERE Tables_ID = {tableNumber} AND Tables_Status = 'Занят'";
+                        SqlCommand tablesCommand = new SqlCommand(tablesQuery, connection);
+                        int reservationCount = (int)tablesCommand.ExecuteScalar();
+                        if (reservationCount > 0)
+                        {
+                            UpdateTableStatusBusy(tableNumber, reservationCount > 0);
+                        }
+                        else
+                        {
+                            DateTime currentDateTime = DateTime.Now;
+                            string reservationQuery = $"SELECT COUNT(*) FROM Reservation " +
+                                                       $"WHERE Reservation_Table = {tableNumber} " +
+                                                       $"AND Reservation_Date = '{currentDateTime.Date:yyyy-MM-dd}' " +
+                                                       $"AND '{currentDateTime:HH:mm:ss}' BETWEEN Reservation_Start AND Reservation_End AND Reservation_Status='Активна'";
+                            SqlCommand reservationCommand = new SqlCommand(reservationQuery, connection);
+                            reservationCount = (int)reservationCommand.ExecuteScalar();
+                            UpdateTableStatus(tableNumber, reservationCount > 0);
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -1103,11 +1279,17 @@ namespace WpfApp1
                     MessageBox.Show("Error: " + ex.Message);
                 }
             }
+
         }
 
         private void UpdateTableStatus(int tableNumber, bool isOccupied)
         {
             string status = isOccupied ? "Забронирован" : "Свободен";
+            SetTableStatus(tableNumber, status);
+        }
+        private void UpdateTableStatusBusy(int tableNumber, bool isOccupied)
+        {
+            string status = isOccupied ? "Занят" : "Свободен";
             SetTableStatus(tableNumber, status);
         }
 
@@ -1124,6 +1306,45 @@ namespace WpfApp1
                 case 3:
                     tableNumber3.Status = status;
                     break;
+                case 4:
+                    tableNumber4.Status = status;
+                    break;
+                case 5:
+                    tableNumber5.Status = status;
+                    break;
+                case 6:
+                    tableNumber6.Status = status;
+                    break;
+                case 7:
+                    tableNumber7.Status = status;
+                    break;
+                case 8:
+                    tableNumber8.Status = status;
+                    break;
+                case 9:
+                    tableNumber9.Status = status;
+                    break;
+                case 10:
+                    tableNumber10.Status = status;
+                    break;
+                case 11:
+                    tableNumber11.Status = status;
+                    break;
+                case 12:
+                    tableNumber12.Status = status;
+                    break;
+                case 13:
+                    tableNumber13.Status = status;
+                    break;
+                case 14:
+                    tableNumber14.Status = status;
+                    break;
+                case 15:
+                    tableNumber15.Status = status;
+                    break;
+                case 16:
+                    tableNumber16.Status = status;
+                    break;
                 default:
                     break;
             }
@@ -1138,7 +1359,7 @@ namespace WpfApp1
 
                 using (MD5 md5 = MD5.Create())
                 {
-                    
+
                     byte[] hashBytes = md5.ComputeHash(System.Text.Encoding.UTF8.GetBytes(macAddress));
                     string hardwareId = BitConverter.ToString(hashBytes).Replace("-", "").ToLower().Substring(0, 10);
 
@@ -1303,6 +1524,7 @@ namespace WpfApp1
 
         private void DeselectAllMenuButtons()
         {
+            menuResetButton.Tag = null;
             menuMeatButton.Tag = null;
             menuHotButton.Tag = null;
             menuSoupsButton.Tag = null;
@@ -1422,6 +1644,7 @@ namespace WpfApp1
             DateTime selectedDate = datePicker.SelectedDate.GetValueOrDefault();
             string formattedDate = selectedDate.ToString("yyyy-MM-dd");
             getOccupancy(formattedDate);
+            analyticsOccupancyDayButton.Tag = null;
         }
 
         private void printButton_Click(object sender, RoutedEventArgs e)
@@ -1436,6 +1659,19 @@ namespace WpfApp1
             tablesWindow.ShowDialog();
         }
 
-       
+        private void analyticsOccupancyHourButton_Click(object sender, RoutedEventArgs e)
+        {
+            analyticsOccupancyHourButton.Tag = "Selected";
+            analyticsOccupancyDayButton.Tag = null;
+            getOccupancy($"{now.Date:yyyy-MM-dd}");
+        }
+
+        private void analyticsOccupancyDayButton_Click(object sender, RoutedEventArgs e)
+        {
+            analyticsOccupancyDayButton.Tag = "Selected";
+            analyticsOccupancyHourButton.Tag = null;
+            getOccupancyForCurrentMonth();
+        }
     }
+
 }

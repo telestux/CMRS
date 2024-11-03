@@ -58,9 +58,20 @@ namespace Sales_Dashboard.UserControls
         }
         private void ButtonTable_Click(object sender, RoutedEventArgs e)
         {
-            tablesEditTable secondWindow = new tablesEditTable(Number, Status);
-            secondWindow.ShowDialog();
+            if (sender is Button button)
+            {
+                Window window = Window.GetWindow(button);
+                if (window is MainWindow)
+                {
+                    tablesEditTable secondWindow = new tablesEditTable(Number, Status);
+                    secondWindow.ShowDialog();
+                }
+                else if (window is GarconWindow garconWindow) 
+                {
+                    garconWindow.ChangeTableState(Number, Status);
+                }
+            }
         }
-       
+
     }
 }

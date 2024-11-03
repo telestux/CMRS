@@ -179,14 +179,15 @@ namespace WpfApp1
                 await Task.Delay(1000);
                 passwordTextBox.Background = Brushes.White;
             }
-            if (loginTextBox.Text != "Введите логин" && passwordTextBox.Text != "Какойтотекст")
+            if (loginTextBox.Text != "Введите логин"  && passwordTextBox.Text != "Какойтотекст")
             {
                 bool passwordMatch = verifyPassword(loginTextBox.Text, passwordTextBox.Text);
                 if (passwordMatch)
                 {
                     MainWindow secondWindow = new MainWindow();
-                    secondWindow.ShowDialog();
-                    this.Hide();
+                    Application.Current.MainWindow = secondWindow;
+                    secondWindow.Show();
+                    this.Close();
                 }
                 else
                 {
@@ -298,7 +299,8 @@ namespace WpfApp1
             if (recoveryTextBox.Text == outBSTR)
             {
                 MainWindow secondWindow = new MainWindow();
-                secondWindow.ShowDialog();
+                Application.Current.MainWindow = secondWindow;
+                secondWindow.Show();
                 this.Close();
             }
             
@@ -331,8 +333,13 @@ namespace WpfApp1
                         if (recoveryTextBox2.Text == code)
                         {
                             MainWindow secondWindow = new MainWindow();
-                            secondWindow.ShowDialog();
+                            Application.Current.MainWindow = secondWindow;
+                            secondWindow.Show();
                             this.Close();
+                        }
+                        else if (recoveryTextBox.Text != code)
+                        {
+                            MessageBox.Show("Неверный код", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
                         if (recoveryTextBox2.Text == "Введите резервный код")
                         {
@@ -340,10 +347,7 @@ namespace WpfApp1
                             await Task.Delay(1000);
                             recoveryTextBox2.Background = Brushes.White;
                         }
-                        else if (recoveryTextBox.Text != code)
-                        {
-                            MessageBox.Show("Неверный код", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                        }
+                        
 
                     }
                 }

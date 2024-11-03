@@ -10,8 +10,13 @@
     <Grid Name="printGrid">
         <TextBlock Text="Меню" Style="{StaticResource menuText}" HorizontalAlignment="Center" Margin="0 20 0 0" FontSize="45"/>
         <DataGrid Name="menuGrid" AutoGenerateColumns="False" HorizontalGridLinesBrush="Black"
-RowBackground="White" CanUserAddRows="False" CanUserDeleteRows="False" CanUserSortColumns="False" IsReadOnly="True"  AlternatingRowBackground="White" Visibility="Visible" Height="auto" Margin="10,78,10,67" BorderBrush="White" Background="White" Foreground="Black" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden"
+RowBackground="White" CanUserAddRows="False" CanUserDeleteRows="False" CanUserSortColumns="False" IsReadOnly="True"  AlternatingRowBackground="White" Visibility="Visible" Height="auto" Margin="10,78,10,67" BorderBrush="White" Background="White" Foreground="Black" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden" 
 >
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <EventSetter Event="PreviewMouseDown" Handler="DataGridRow_PreviewMouseDown"/>
+                </Style>
+            </DataGrid.RowStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Позиция" Binding="{Binding Path=Name}" Width="350">
 

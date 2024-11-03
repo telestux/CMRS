@@ -47,16 +47,18 @@ namespace WpfApp1
             }
             else if (Status == "Свободен")
             {
-                this.Height = 200;
+                this.Height = 280;
                 reservationStackPanel.Visibility = Visibility.Collapsed;
                 statusTextBlock.Text = "Свободен";
+                busyButton.Visibility = Visibility.Visible;
                 statusTextBlock.Visibility = Visibility.Visible;
             }
             else if (Status == "Занят")
             {
-                this.Height = 200;
+                this.Height = 280;
                 reservationStackPanel.Visibility = Visibility.Collapsed;
                 statusTextBlock.Text = "Занят";
+                unBusyButton.Visibility = Visibility.Visible;
                 statusTextBlock.Visibility = Visibility.Visible;
             }
         }
@@ -97,7 +99,7 @@ namespace WpfApp1
                                    $"AND Reservation_Date = '{currentDateTime.Date:yyyy-MM-dd}' " +
                                    $"AND '{currentDateTime:HH:mm:ss}' BETWEEN Reservation_Start AND Reservation_End AND Reservation_Status='Активна'";
                     SqlCommand command = new SqlCommand(query, connection);
-                    int reservationCount = (int)command.ExecuteScalar();
+                    command.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
@@ -106,6 +108,51 @@ namespace WpfApp1
             finally
             {
                 connection.Close();
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                connection.Open();
+                string query = $"UPDATE Tables SET Tables_Status='Занят' WHERE Tables_ID = '{Number}';";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.ExecuteNonQuery();
+                MessageBox.Show("Стол успешно занят!", "Стол занят", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
+            finally
+            {
+
+                connection.Close();
+                this.Close();
+            }
+        }
+
+        private void unBusyButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                connection.Open();
+                DateTime currentDateTime = DateTime.Now;
+                string query = $"UPDATE Tables SET Tables_Status='Свободен'" +
+                               $"WHERE Tables_ID = {Number};";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.ExecuteNonQuery();
+                MessageBox.Show("Стол успешно освобождён!", "Стол освобождён", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+                this.Close();
             }
         }
     }
